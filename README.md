@@ -1,4 +1,4 @@
-# Environment Dashboard [![Build Status](https://travis-ci.org/karl-sjogren/environment-dashboard.svg?branch=develop)](https://travis-ci.org/karl-sjogren/Senvironment-dashboard)
+# Environment Dashboard [![Build Status](https://travis-ci.org/karl-sjogren/environment-dashboard.svg?branch=develop)](https://travis-ci.org/karl-sjogren/environment-dashboard)
 
 A small dashboard I built to monitor the temperature and such out in my cabin.
 
