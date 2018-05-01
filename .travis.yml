@@ -3,6 +3,8 @@ mono: alpha
 sudo: required
 dist: trusty
 #dotnet: 2.0.0
+node_js:
+  - "7"
 addons:
   apt:
     packages:
@@ -23,6 +25,9 @@ install:
   - export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
   - export DOTNET_CLI_TELEMETRY_OPTOUT=true
   - dotnet restore
+  - cd src/webapp/
+  - npm install
+  - ./node_modules/bin/ember build
 script:
 #  - ./build.sh --target=test
   - ./build.sh --target=pack
