@@ -1,0 +1,45 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/wwwroot": false,
+        "**/wwwroot/js": true,
+        "**/wwwroot/css": true,
+        "**/wwwroot/svg": true,
+        "**/wwwroot/i18n": true,
+        "**/wwwroot/fonts": true,
+        "**/wwwroot/vendor": true,
+        "**/Assets/vendor/*": true
+    },
+    "[javascript]": {
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[csharp]": {
+        "editor.tabSize": 4
+    },
+    "[html]": {
+        "editor.tabSize": 2
+    },
+    "[handlebars]": {
+        "editor.tabSize": 2
+    },
+    "[razor]": {
+        "editor.tabSize": 2
+    },
+    "less.scannerExclude": [
+        "**/.git",
+        "**/node_modules",
+        "**/bower_components",
+        "**/dist/",
+        "**/tmp/",
+        "**/vendor/"
+    ],
+    "less.showErrors": true,
+    "eslint.enable": false
+}
