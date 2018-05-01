@@ -289,4 +289,4 @@ __pycache__/
 
 # Cake-tools
 tools/**
-!tools/package.config
+!tools/packages.config
