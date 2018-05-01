@@ -31,4 +31,4 @@ install:
   - cd ../../
 script:
 #  - ./build.sh --target=test
-  - ./build.sh --target=pack
+  - ./build.sh --target=build
