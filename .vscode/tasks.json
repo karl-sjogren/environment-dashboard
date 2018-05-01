@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/EnvironmentDashboard.Api/EnvironmentDashboard.Api.csproj"
+                "${workspaceFolder}/src/EnvironmentDashboard.Api/EnvironmentDashboard.Api.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

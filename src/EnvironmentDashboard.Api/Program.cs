@@ -13,24 +13,8 @@ using Microsoft.Extensions.Logging;
 namespace EnvironmentDashboard.Api {
     public class Program {
         public static void Main(string[] args) {
-            var builder = new ConfigurationBuilder()
-                .AddEnvironmentVariables(prefix: "ASPNETCORE_");
-
-            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() == "development") {
-                builder.AddUserSecrets<Startup>();
-            }
-
-            var config = builder.Build();
-
-            var host = new WebHostBuilder()
-                .UseConfiguration(config)
-                .UseKestrel(options => {
-                    options.Listen(IPAddress.Any, 5000);
-                })
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureLogging((hostingContext, logging) => {
-                    logging.AddConsole();
-                })
+            var host = WebHost
+                .CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
 

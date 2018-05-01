@@ -18,7 +18,7 @@ namespace EnvironmentDashboard.Api.Stores {
             Client = client;
             Logger = logger;
 
-            var databaseName = MongoUrl.Create(configuration["mongodb-connectionstring"]).DatabaseName;
+            var databaseName = MongoUrl.Create(configuration["MONGODB_URI"]).DatabaseName;
             Database = client.GetDatabase(databaseName);
         }
     }

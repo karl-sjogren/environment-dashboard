@@ -29,7 +29,6 @@ namespace EnvironmentDashboard.Api {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
 
-            
             services.AddResponseCompression(options => {
                 options.Providers.Add<GzipCompressionProvider>();
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
@@ -38,7 +37,6 @@ namespace EnvironmentDashboard.Api {
             var mongoClient = new MongoClient(Configuration["MONGODB_URI"]);
             services.AddSingleton<IMongoClient>(mongoClient);
 
-            
             services.AddScoped<IApiKeyStore, ApiKeyStore>();
             services.AddScoped<IUserStore, UserStore>();
 
