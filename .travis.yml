@@ -13,6 +13,10 @@ addons:
     - libicu-dev
     - libssl-dev
     - libunwind8
+cache:
+  directories:
+    - src/webapp/node_modules
+    - ~/.nuget/packages
 env:
   global: 
     - MONO_TLS_PROVIDER=legacy
