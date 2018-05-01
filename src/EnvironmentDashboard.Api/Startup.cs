@@ -35,7 +35,7 @@ namespace EnvironmentDashboard.Api {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
             });
             
-            var mongoClient = new MongoClient(Configuration["mongodb-connectionstring"]);
+            var mongoClient = new MongoClient(Configuration["MONGODB_URI"]);
             services.AddSingleton<IMongoClient>(mongoClient);
 
             

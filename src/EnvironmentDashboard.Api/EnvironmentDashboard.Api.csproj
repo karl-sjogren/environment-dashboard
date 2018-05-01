@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.18.2" />
     <PackageReference Include="Jetbrains.Annotations" Version="11.1.0" />
     <PackageReference Include="jose-jwt" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
