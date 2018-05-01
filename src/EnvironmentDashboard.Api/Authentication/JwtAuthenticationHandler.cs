@@ -7,6 +7,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Extensions;
+using EnvironmentDashboard.Api.Options;
 using Jose;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,7 +19,7 @@ using Newtonsoft.Json;
 namespace EnvironmentDashboard.Api.Authentication {
     public class JwtAuthenticationHandler : AuthenticationHandler<JwtBearerOptions> {
         private readonly ILogger _log;
-        private readonly IConfiguration _configuration;
+        private readonly MongoDbOptions _mongoDbOptions;
         private readonly IUserStore _userStore;
         private readonly IApiKeyStore _apiKeyStore;
 
@@ -26,13 +27,13 @@ namespace EnvironmentDashboard.Api.Authentication {
                                         ILoggerFactory loggerFactory,
                                         UrlEncoder encoder,
                                         ISystemClock clock,
-                                        IConfiguration configuration,
+                                        IOptions<MongoDbOptions> optionsAccessor,
                                         IUserStore userStore,
                                         IApiKeyStore apiKeyStore)
             : base(options, loggerFactory, encoder, clock) {
 
             _log = loggerFactory.CreateLogger<JwtAuthenticationHandler>();
-            _configuration = configuration;
+            _mongoDbOptions = optionsAccessor.Value;
             _userStore = userStore;
             _apiKeyStore = apiKeyStore;
         }
@@ -54,7 +55,7 @@ namespace EnvironmentDashboard.Api.Authentication {
             }
 
             var sha = SHA256Managed.Create();
-            var privateKey = sha.ComputeHash(Encoding.UTF8.GetBytes(_configuration["mongodb-connectionstring"]));
+            var privateKey = sha.ComputeHash(Encoding.UTF8.GetBytes(_mongoDbOptions.MongoDbUri));
 
             var decryptedToken = Jose.JWT.Decode(token, privateKey, JweAlgorithm.A256KW, JweEncryption.A256CBC_HS512);
 

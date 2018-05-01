@@ -6,16 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Models;
+using EnvironmentDashboard.Api.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
 namespace EnvironmentDashboard.Api.Stores {
     public class UserStore : MongoDBStore, IUserStore {
-        public UserStore(IMongoClient client, IConfiguration configuration, ILogger<UserStore> logger) : base(client, configuration, logger) { }
+        public UserStore(IMongoClient client, IOptions<MongoDbOptions> optionsAccessor, ILogger<UserStore> logger) : base(client, optionsAccessor, logger) { }
 
         public async Task<Int32> Count() {
             var collection = Database.GetCollection<User>("users");

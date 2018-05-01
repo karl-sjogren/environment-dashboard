@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EnvironmentDashboard.Api.Authentication;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Middlewares;
+using EnvironmentDashboard.Api.Options;
 using EnvironmentDashboard.Api.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -27,11 +28,26 @@ namespace EnvironmentDashboard.Api {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddOptions();
             services.AddMvc();
 
             services.AddResponseCompression(options => {
                 options.Providers.Add<GzipCompressionProvider>();
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
+            });
+
+            services.Configure<MongoDbOptions>(options => {
+                options.MongoDbUri = Configuration["MONGODB_URI"];
+            });
+
+            services.Configure<AmazonWebServicesOptions>(options => {
+                options.AccessKey = Configuration["AWS_ACCESS_KEY"];
+                options.SecretKey = Configuration["AWS_SECRET_KEY"];
+                options.BucketName = Configuration["AWS_BUCKET_NAME"];
+
+                var regionName = Configuration["AWS_REGION"];
+                var region = Amazon.RegionEndpoint.EnumerableAllRegions.FirstOrDefault(r => r.SystemName.Equals(regionName, StringComparison.OrdinalIgnoreCase));
+                options.Region = region;
             });
             
             var mongoClient = new MongoClient(Configuration["MONGODB_URI"]);

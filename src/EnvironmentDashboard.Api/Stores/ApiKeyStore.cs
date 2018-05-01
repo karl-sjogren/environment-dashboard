@@ -4,16 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Models;
+using EnvironmentDashboard.Api.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
 namespace EnvironmentDashboard.Api.Stores {
     public class ApiKeyStore : MongoDBStore, IApiKeyStore {
-        public ApiKeyStore(IMongoClient client, IConfiguration configuration, ILogger<ApiKeyStore> logger) : base(client, configuration, logger) { }
+        public ApiKeyStore(IMongoClient client, IOptions<MongoDbOptions> optionsAccessor, ILogger<ApiKeyStore> logger) : base(client, optionsAccessor, logger) { }
 
         public async Task<Int32> Count() {
             var collection = Database.GetCollection<ApiKey>("api-keys");
