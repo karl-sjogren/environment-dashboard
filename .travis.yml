@@ -28,6 +28,7 @@ install:
   - cd src/webapp/
   - npm install
   - ./node_modules/.bin/ember build
+  - cd ../../
 script:
 #  - ./build.sh --target=test
   - ./build.sh --target=pack
