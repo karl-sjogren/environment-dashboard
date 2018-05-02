@@ -24,6 +24,8 @@ deploy:
   skip_cleanup: true
   on: develop
   app: stugan
+  file_glob: true
+  file: "src/EnvironmentDashboard.Api/**/*"
 env:
   global: 
     - MONO_TLS_PROVIDER=legacy
