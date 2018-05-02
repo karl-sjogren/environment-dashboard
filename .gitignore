@@ -290,3 +290,6 @@ __pycache__/
 # Cake-tools
 tools/**
 !tools/packages.config
+
+# Ember output
+src/EnvironmentDashboard.Api/wwwroot/**

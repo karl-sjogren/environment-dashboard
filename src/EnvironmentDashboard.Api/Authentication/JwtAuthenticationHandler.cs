@@ -18,7 +18,6 @@ using Newtonsoft.Json;
 
 namespace EnvironmentDashboard.Api.Authentication {
     public class JwtAuthenticationHandler : AuthenticationHandler<JwtBearerOptions> {
-        private readonly ILogger _log;
         private readonly MongoDbOptions _mongoDbOptions;
         private readonly IUserStore _userStore;
         private readonly IApiKeyStore _apiKeyStore;
@@ -31,8 +30,6 @@ namespace EnvironmentDashboard.Api.Authentication {
                                         IUserStore userStore,
                                         IApiKeyStore apiKeyStore)
             : base(options, loggerFactory, encoder, clock) {
-
-            _log = loggerFactory.CreateLogger<JwtAuthenticationHandler>();
             _mongoDbOptions = optionsAccessor.Value;
             _userStore = userStore;
             _apiKeyStore = apiKeyStore;

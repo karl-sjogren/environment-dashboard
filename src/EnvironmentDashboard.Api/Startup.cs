@@ -54,6 +54,7 @@ namespace EnvironmentDashboard.Api {
             services.AddSingleton<IMongoClient>(mongoClient);
 
             services.AddScoped<IApiKeyStore, ApiKeyStore>();
+            services.AddScoped<ISensorStore, SensorStore>();
             services.AddScoped<IUserStore, UserStore>();
 
             // The initializers should be executed in order
