@@ -52,7 +52,7 @@ Task("ember-build")
                 WorkingDirectory = "./src/webapp"
             });
         } else if(IsRunningOnUnix()){
-            returnCode = StartProcess("ember", new ProcessSettings{
+            returnCode = StartProcess("./src/webapp/node_modules/.bin/ember", new ProcessSettings{
                 Arguments = args,
                 WorkingDirectory = "./src/webapp"
             });
