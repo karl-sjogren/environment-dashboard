@@ -42,3 +42,4 @@ install:
 script:
 #  - ./build.sh --target=test
   - ./build.sh --target=build
+  - printf '\n!src/EnvironmentDashboard.Api/wwwroot/**' >> .gitignore
