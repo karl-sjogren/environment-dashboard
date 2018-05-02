@@ -23,6 +23,7 @@ deploy:
     secure: "ZoXGMdLTr08CE9MLF63VipUwgKdrQdxQxd3LXpUiB0mL2lMkDUcbynRII4PU9552y5jQ1NLZsZwDr8hFtKIGjNqw+aEh0yBoJHLYe5oWEnXiiMfZh6uxqsedoQh13Zp/Wjm35dYYMVkFK9B1kaOPhVCLpB2OzQBNOlCbNTWmgui9rxH6474wk7lxqpuJGuYXVFzuej6wZn7l9J7MaOJmWRMz+uvjil7lPkl2wYqjAvBipCdeM5xymuzSRgw4zQQqj9hByYhX7CeTYAi+j1O2bEuMR9SCnwbVnNbTrQy9ApckiuXHeJ5eZ/HnCvjMmPDwofHi+rz3RLuGDXOiJSOBYgK98NZve6v2XDb2XV0iPG3uO/A2TMObxX9I+7Ci1f9EiruDBXAs6IK8p1h4tYp5qeO8FGuxBuvd2Hd2qLaIw1wbA4qPRJhGG0/fYKTo8P6JzuCtsEOMpDbvJ1VlSkt1Ia3dFK5guqMJTKZAJdY/Nj2IrN/kQA3Zf8WDihxrKf9VtL9pCNtfnibi9wAcKj9O/fBsCvLfLpgIYsioeZOpfRKmrntbUjASim4QXRCDyOc8paISptpzmp15Kdq+69h10Dupj8q+vltoJBPAUK+e2GscRQ/tK22I++Bmjvlj9EILWe/2JLXnMtXCDdyfZyzZQ/UVXLc+r4X2QC/9tFLOkUw="
   skip_cleanup: true
   on: develop
+  app: stugan
 env:
   global: 
     - MONO_TLS_PROVIDER=legacy
