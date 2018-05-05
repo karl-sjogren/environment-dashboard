@@ -46,6 +46,9 @@ namespace EnvironmentDashboard.Api.Middlewares {
         }
 
         public async Task Invoke(HttpContext ctx) {
+            if(ctx.Response.HasStarted)
+                return;
+
             _log.LogDebug($"Called with {ctx.Request.Method} {ctx.Request.Path}?{ctx.Request.QueryString.Value}");
             
             var request = new HttpRequestMessage();

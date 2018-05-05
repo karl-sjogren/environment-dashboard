@@ -20,8 +20,11 @@ using MongoDB.Driver;
 
 namespace EnvironmentDashboard.Api {
     public class Startup {
-        public Startup(IConfiguration configuration) {
+        private readonly ILogger _log;
+
+        public Startup(IConfiguration configuration, ILogger<Startup> log) {
             Configuration = configuration;
+            _log = log;
         }
 
         public IConfiguration Configuration { get; }
@@ -48,6 +51,9 @@ namespace EnvironmentDashboard.Api {
                 var regionName = Configuration["AWS_REGION"];
                 var region = Amazon.RegionEndpoint.EnumerableAllRegions.FirstOrDefault(r => r.SystemName.Equals(regionName, StringComparison.OrdinalIgnoreCase));
                 options.Region = region;
+
+                if(region == null)
+                    _log.LogWarning("Invalid AWS region specified. The format should be like eu-west-1.");
             });
             
             var mongoClient = new MongoClient(Configuration["MONGODB_URI"]);
