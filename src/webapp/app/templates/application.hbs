@@ -1,5 +1,18 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
 
+{{#if session.isAuthenticated}}
+  <aside>
+    <h1 class="sr-only">Environment dashboard</h1>
+    {{#link-to 'index'}}
+      <img src="/img/logo.png"/>
+    {{/link-to}}
+
+    <nav>
+      <ul>
+        {{#link-to 'api-keys' tagName='li'}}API keys{{/link-to}}
+        {{#link-to 'account' tagName='li'}}User information{{/link-to}}
+        <li {{action 'invalidateSession' }}>Logout</li>
+      </ul>
+    </nav>
+  </aside>
+{{/if}}
 {{outlet}}

@@ -6,7 +6,13 @@ const Router = EmberRouter.extend({
   rootURL: config.rootURL
 });
 
+
 Router.map(function() {
+  this.route('login');
+  this.route('account');
+
+  this.route('api-keys');
+  this.route('api-key', { path: '/api-key/:api_key_id' });
 });
 
 export default Router;

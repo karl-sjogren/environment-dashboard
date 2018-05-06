@@ -1,0 +1,65 @@
+{{scroll-top}}
+<div class="page account">
+  <section class="user-info">  
+    <h1>User information</h1>
+      <form>
+        <div class="form-group">
+          <label for="first-name">Surname</label>
+          {{input type='text' id='first-name' value=model.firstName autocomplete='given-name'}}
+        </div>
+
+        <div class="form-group">
+          <label for="last-name">Lastname</label>
+          {{input type='text' id='last-name' value=model.lastName autocomplete='family-name' }}
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          {{input type='text' id='email' value=model.email autocomplete='email'}}
+        </div>
+
+        {{#if accountChanged}}
+          <span class="alert alert-good-stuff-happened">Your changes were saved.</span>
+        {{/if}}
+
+        {{#if accountChangeFailed}}
+          <span class="alert alert-error">Something went wrong while saving the changes.</span>
+        {{/if}}
+
+        <button class="btn-primary" {{action 'save'}}>Save</button>
+      </form>
+    </section>
+
+    <section class="user-info">  
+      <h1>Change password</h1>
+      <form>
+        <div class="form-group {{if newPasswordMismatch 'error'}}">
+          <label for="new-password">New password</label>
+          {{input type='password' id='new-password' value=newPassword autocomplete='new-password'}}
+        </div>
+
+        <div class="form-group {{if newPasswordMismatch 'error'}}">
+          <label for="new-password-repeat">Repeat new password</label>
+          {{input type='password' id='new-password-repeat' value=newPasswordRepeat autocomplete='new-password'}}
+        </div>
+
+        {{#if passwordChanged}}
+          <span class="alert alert-good-stuff-happened">Your password was updated.</span>
+        {{/if}}
+
+        {{#if passwordChangeFailed}}
+          <span class="alert alert-error">Something went wrong when updating your password.</span>
+        {{/if}}
+
+        {{#if newPasswordMismatch}}
+          <span class="alert alert-error password-mismatch">The passwords doesn't match, try again.</span>
+        {{/if}}
+
+        {{#if newPasswordComplexityTooLow}}
+          <span class="alert alert-error password-complexity-too-low">The password is too weak. It has to contain at least six characters and at least three different ones.</span>
+        {{/if}}
+
+        <button class="btn-primary" {{action 'updatePassword'}} disabled={{changePasswordDisabled}}>Change password</button>
+      </form>
+  </section>
+</div>
