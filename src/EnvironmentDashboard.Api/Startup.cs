@@ -6,6 +6,7 @@ using EnvironmentDashboard.Api.Authentication;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Middlewares;
 using EnvironmentDashboard.Api.Options;
+using EnvironmentDashboard.Api.Services;
 using EnvironmentDashboard.Api.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -63,6 +64,8 @@ namespace EnvironmentDashboard.Api {
             services.AddScoped<ISensorStore, SensorStore>();
             services.AddScoped<IUserStore, UserStore>();
 
+            services.AddScoped<IApiKeyService, ApiKeyService>();
+
             // The initializers should be executed in order
             services.AddSingleton<IInitializer, AutoMapperInitializer>();
             services.AddSingleton<IInitializer, MongoDbInitializer>();
@@ -86,7 +89,6 @@ namespace EnvironmentDashboard.Api {
             services.AddScheme<JwtBearerOptions, JwtAuthenticationHandler>(JwtBearerDefaults.AuthenticationScheme, "Environment Dashboard", x => new JwtBearerOptions());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             app.UseResponseCompression();
 

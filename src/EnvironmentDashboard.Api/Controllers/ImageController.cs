@@ -7,25 +7,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
 
 namespace EnvironmentDashboard.Api.Controllers {
-    //[Authorize(Policy = "AdminUser")]
     [Route("admin/api/images/")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ImageController : Controller {
         private readonly AmazonWebServicesOptions _options;
         private readonly IAmazonS3 _client;
+        private readonly ISystemClock _systemClock;
 
-        public ImageController(IOptions<AmazonWebServicesOptions> optionsAccessor) {
+        public ImageController(IOptions<AmazonWebServicesOptions> optionsAccessor, ISystemClock systemClock) {
             _options = optionsAccessor.Value;
             _client = new AmazonS3Client(_options.AccessKey, _options.SecretKey, _options.Region);
+            _systemClock = systemClock;
         }
 
+        private string BucketPrefix => _systemClock.UtcNow.ToString("yyyy-mm-dd");
+
+        [Authorize(Policy = "AdminUser")]
         [HttpGet("image-stream")]
         public async Task GetImageStream() {
             string continuationToken = null;
@@ -34,6 +40,7 @@ namespace EnvironmentDashboard.Api.Controllers {
                 var request = new ListObjectsV2Request();
                 request.BucketName = _options.BucketName;
                 request.MaxKeys = 1000;
+                request.Prefix = BucketPrefix;
                 request.ContinuationToken = continuationToken;
                 
                 var response = await _client.ListObjectsV2Async(request);
@@ -56,9 +63,13 @@ namespace EnvironmentDashboard.Api.Controllers {
                 request.Key = obj.Key;
 
                 var response = await _client.GetObjectAsync(request);
+                
+                var mimeType = "image/jpeg";
+                if(Path.GetExtension(response.Key)?.Equals(".png", StringComparison.OrdinalIgnoreCase) == true)
+                    mimeType = "image/png";
 
                 using(var sr = new StreamWriter(Response.Body, encoding, 4096, true)) {
-                    await sr.WriteLineAsync("Content-type: image/jpeg");
+                    await sr.WriteLineAsync("Content-type: " + mimeType);
                     await sr.WriteLineAsync();
                 }
 
@@ -71,6 +82,24 @@ namespace EnvironmentDashboard.Api.Controllers {
                 await Response.Body.FlushAsync();
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
             }
+        }
+
+        [Authorize(Policy = "ApiUser")]
+        [HttpPost("image-stream")]
+        public async Task<IActionResult> SaveImageStream() {
+            if(!Request.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+                return BadRequest();
+
+            var extension = ".jpg";
+            if(Request.ContentType.Equals("image/png", StringComparison.OrdinalIgnoreCase))
+                extension = ".png";
+            
+            var fileName = BucketPrefix + "/" + _systemClock.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss") + extension;
+
+            var utility = new TransferUtility(_client);
+            await utility.UploadAsync(Request.Body, _options.BucketName, fileName);
+            
+            return NoContent();
         }
     }
 }
