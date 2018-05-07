@@ -95,8 +95,6 @@ namespace EnvironmentDashboard.Api {
             if(env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
 
-                // Serves index.html from wwwroot
-                app.UseDefaultFiles();
                 app.Use(async (context, next) => {
                     await next();
                     
@@ -115,6 +113,9 @@ namespace EnvironmentDashboard.Api {
                     await next();
                 });
             }
+
+            // Serves index.html from wwwroot
+            app.UseDefaultFiles();
 
             app.UseStaticFiles();
             app.UseAuthentication();
