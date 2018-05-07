@@ -4,7 +4,9 @@ A small dashboard I built to monitor the temperature and such out in my cabin.
 
 It is built to store statistics in mongodb and snapshot images in an S3 bucket.
 
-It can preferably be deployed to Heroku.
+It can preferably be deployed to Heroku using the following buildpack.
+
+https://github.com/karl-sjogren/dotnetcore-buildpack/tree/environment-dashboard
 
 ## Setup
 
