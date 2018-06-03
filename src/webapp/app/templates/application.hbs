@@ -1,11 +1,12 @@
 
 {{#if session.isAuthenticated}}
-  <aside>
-    <h1 class="sr-only">Environment dashboard</h1>
+  <header>
     {{#link-to 'index'}}
-      <img src="/img/logo.png"/>
+      <img src="/assets/images/logo.png"/>
     {{/link-to}}
-
+    <h1 class="sr-only">Environment dashboard</h1>
+  </header>
+  <aside>
     <nav>
       <ul>
         {{#link-to 'api-keys' tagName='li'}}API keys{{/link-to}}

@@ -32,6 +32,9 @@
     "[razor]": {
         "editor.tabSize": 2
     },
+    "[less]": {
+        "editor.tabSize": 2
+    },
     "less.scannerExclude": [
         "**/.git",
         "**/node_modules",

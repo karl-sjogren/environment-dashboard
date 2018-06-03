@@ -17,3 +17,8 @@ Required environment variables or user secrets.
 - AWS_SECRET_KEY
 - AWS_BUCKET_NAME
 - AWS_REGION
+
+## Attributions
+
+Default logo from https://pixabay.com/sv/milj%C3%B6-friendly-eco-natur-3420052/,
+licensed under Creative Commons Zero.

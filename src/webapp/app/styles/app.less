@@ -1,0 +1,79 @@
+@import "normalize.less";
+@import "login-page.less";
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+.ember-application > div {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+
+  > * {
+    flex: 1 1 50%;
+  }
+}
+
+header {
+  flex: 1 1 100% !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    max-width: 150px;
+  }
+}
+
+aside {
+  padding-top: 56px;
+  max-width: 200px;
+
+  ul {
+    list-style: none;
+    margin: 12px;
+    padding: 0;
+
+    li {
+      margin: 10px 0;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+li {
+  margin: 10px 0;
+}
+
+.page {
+  margin-left: 32px;
+}
+
+form {
+  .form-group {
+    display: flex;
+
+    > * {
+      flex: 1;
+    }
+
+    label {
+      min-width: 200px;
+      max-width: 350px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      max-width: 350px;
+    }
+  }
+}
