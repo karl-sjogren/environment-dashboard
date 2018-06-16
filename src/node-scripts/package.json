@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "node-fetch": "^2.1.2",
+    "pi-camera": "karl-sjogren/pi-camera",
+    "rpi-gpio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.1.1"
+  }
+}
