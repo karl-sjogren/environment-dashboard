@@ -12,6 +12,7 @@ addons:
 cache:
   directories:
     - $HOME/.npm
+    - /usr/lib/mono/
 
 env:
   global:
