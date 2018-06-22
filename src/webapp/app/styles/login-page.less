@@ -1,20 +1,33 @@
 .login-page {
   form {
-    width: 400px;
-    height: 400px;
     position: absolute;
-    top: 30%;
     left: 50%;
+    top: 30%;
     transform: translateX(-50%);
   }
-
   .login-container {
-    display: flex;
-    flex-direction: column;
-
     button {
-      min-width: 180px;
-      min-height: 80px;
+      margin-top: 16px;
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 460px) { 
+  .login-page {
+    form {
+      width: 400px;
+      height: 400px;
+    }
+
+    .login-container {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        min-width: 180px;
+        min-height: 40px;
+      }
     }
   }
 }

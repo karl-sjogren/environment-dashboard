@@ -293,3 +293,6 @@ tools/**
 
 # Ember output
 src/EnvironmentDashboard.Api/wwwroot/**
+
+# OSX crap
+.DS_Store

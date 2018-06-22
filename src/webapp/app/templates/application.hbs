@@ -9,9 +9,21 @@
   <aside>
     <nav>
       <ul>
-        {{#link-to 'api-keys' tagName='li'}}API keys{{/link-to}}
-        {{#link-to 'account' tagName='li'}}User information{{/link-to}}
-        <li {{action 'invalidateSession' }}>Logout</li>
+        {{#link-to 'api-keys' tagName='li' class='menu-sensors icon-thermometer'}}
+          <span class="menu-text">Sensors</span>
+        {{/link-to}}
+        {{#link-to 'api-keys' tagName='li' class='menu-api-keys icon-key'}}
+          <span class="menu-text">API keys</span>
+        {{/link-to}}
+        {{#link-to 'account' tagName='li' class='menu-account icon-user'}}
+          <span class="menu-text">User information</span>
+        {{/link-to}}
+        {{#link-to 'account' tagName='li' class='menu-users icon-users'}}
+          <span class="menu-text">Users</span>
+        {{/link-to}}
+        <li {{action 'invalidateSession' }} class="menu-logout icon-logout">
+          <span class="menu-text">Logout</span>
+        </li>
       </ul>
     </nav>
   </aside>
