@@ -22,3 +22,6 @@ Required environment variables or user secrets.
 
 Default logo from https://pixabay.com/sv/milj%C3%B6-friendly-eco-natur-3420052/,
 licensed under Creative Commons Zero.
+
+Sample image from https://pixabay.com/sv/giraff-zebra-afrika-safari-djurliv-1082168/,
+licensed under Creative Commons Zero.

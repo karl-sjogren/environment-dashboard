@@ -1,10 +1,12 @@
 {
   "dependencies": {
+    "bluebird": "^3.5.1",
     "node-fetch": "^2.1.2",
     "pi-camera": "karl-sjogren/pi-camera",
     "rpi-gpio": "^1.0.0"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.20",
     "@types/node-fetch": "^2.1.1"
   }
 }

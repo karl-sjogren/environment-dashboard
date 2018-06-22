@@ -1,0 +1,17 @@
+{{#if open}}
+  <section class="modal-dialog">
+    <div class="dialog remove-confirm-dialog">
+      <div class="dialog-header">
+        <h1>Are you sure you want to remove {{itemName}}?</h1>
+      </div>
+      <div class="dialog-content">
+        Removing something can't be undone, are you sure you want to remove {{itemName}}?
+      </div>
+      <div class="dialog-footer">
+        <button class="btn btn-primary" {{action 'closeDialog'}}>Close</button>
+        <button class="btn" {{action 'confirm'}}>Remove</button>
+      </div>
+    </div>
+    <div class="overlay" {{action 'closeDialog'}}></div>
+  </section>
+{{/if}}

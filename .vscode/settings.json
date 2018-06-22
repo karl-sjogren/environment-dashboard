@@ -44,5 +44,6 @@
         "**/vendor/"
     ],
     "less.showErrors": true,
-    "eslint.enable": false
+    "eslint.enable": true,
+    "eslint.packageManager": "yarn"
 }

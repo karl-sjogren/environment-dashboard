@@ -1,7 +1,7 @@
 import PiCamera from 'pi-camera';
-import EnvironmentClient from './src/env-client';
+import EnvironmentClient from './env-client';
 
-let client = new EnvironmentClient('https://stugan.herokuapp.com/', '1234');
+let client = new EnvironmentClient(process.env.API_URL, process.env.API_KEY);
 
 let camera = new PiCamera({
   mode: 'photo',
@@ -15,5 +15,5 @@ camera.snap()
   .then(result => {
     return client.uploadPhoto(result);
   }).catch(error => {
-
+    console.error(error);
   });
