@@ -10,5 +10,6 @@ using MongoDB.Driver.Linq;
 namespace EnvironmentDashboard.Api.Contracts {
     public interface IApiKeyService {
         Task<string> GenerateApiToken(string apiKeyId);
+        Task SendApiKey(string apiKeyId, string currentBaseUrl);
     }
 }

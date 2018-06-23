@@ -50,8 +50,21 @@ namespace EnvironmentDashboard.Api.Controllers {
         public async Task<IActionResult> CreateApiKey([FromBody] ApiKey apiKey) {
             var result = await _apiKeyStore.Save(apiKey);
 
+            await _apiKeyService.SendApiKey(result.Id, (Request.IsHttps ? "https://" : "http://") + Request.Host.Host);
 
             return Json(result);
+        }
+
+        [HttpPut("{id}/resend")]
+        public async Task<IActionResult> ResendApiKey([FromRoute] string id) {
+            var apiKey = await _apiKeyStore.GetById(id);
+
+            if(apiKey == null)
+                return NotFound();
+
+            await _apiKeyService.SendApiKey(id, (Request.IsHttps ? "https://" : "http://") + Request.Host.Host);
+
+            return NoContent();
         }
 
         [HttpPut("{id}")]
