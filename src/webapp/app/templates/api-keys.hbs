@@ -19,15 +19,14 @@
             <article class="column-container">
               <div class="column">
                 <div class="api-key-name">
-                  <h1>{{apiKey.firstName}} {{apiKey.lastName}}</h1>
-                  <span class="organisation">{{apiKey.organisation}}</span>
+                  <h1>{{apiKey.name}}</h1>
                   <span class="email">{{apiKey.email}}</span>
                 </div>
               </div>
               <div class="column">
                 <div class="api-key-stats">
                   <span class="last-access">{{format-date apiKey.lastAccess format='YYYY-MM-DD HH:mm'}}</span>
-                  <span class="request-counter">{{apiKey.requestCounter}}</span>
+                  <span class="request-counter">Requests made: {{apiKey.requestCounter}}</span>
                 </div>
               </div>
               <div class="column interaction-column">

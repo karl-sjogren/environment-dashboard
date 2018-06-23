@@ -4,31 +4,36 @@ import { inject } from '@ember/service';
 export default Service.extend({
   ajax: inject(),
 
-  getUser: function(id) {
+  find(id) {
     let url = `/admin/api/user/${id}`;
-    return this.get('ajax').request(url);
+    return this.ajax.request(url);
   },
 
-  listUsers: function(pageIndex, pageSize) {
+  findAll(pageIndex, pageSize) {
     let url = `/admin/api/user?pageIndex=${pageIndex}&pageSize=${pageSize}`;
-    return this.get('ajax').request(url);
+    return this.ajax.request(url);
   },
 
-  save(user) {
-    if(!!user.id) {
-      let url = `/admin/api/user/${user.id}`;
-      return this.get('ajax').put(url, { data: user });
+  remove(id) {
+    let url = `/admin/api/user/${id}`;
+    return this.ajax.delete(url);
+  },
+
+  save(model) {
+    if(!!model.id) {
+      let url = `/admin/api/user/${model.id}`;
+      return this.ajax.put(url, { data: model });
     } else {
       let url = `/admin/api/user/`;
-      return this.get('ajax').post(url, { data: user }).then(newUser => {
-        user.id = newUser.id;
-        return newUser;
+      return this.ajax.post(url, { data: model }).then(newModel => {
+        model.id = newModel.id;
+        return newModel;
       });
     }
   },
 
   updatePassword(id, password) {
     let url = `/admin/api/user/${id}/password`;
-    return this.get('ajax').put(url, { data: { password: password } });
+    return this.ajax.put(url, { data: { password: password } });
   }
 });

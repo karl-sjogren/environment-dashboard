@@ -9,8 +9,8 @@ export default AjaxService.extend({
   headers: computed('session.isAuthenticated', {
     get() {
       let headers = {};
-      if(this.get('session.isAuthenticated')) {
-        let authToken = this.get('session.data.authenticated.token');
+      if(!!this.session.isAuthenticated) {
+        let authToken = this.session.data.authenticated.token;
         headers['Authorization'] = 'Bearer ' + authToken;
       }
       return headers;
@@ -20,8 +20,8 @@ export default AjaxService.extend({
   isSuccess(status) {
     let isSuccess = this._super(...arguments);
     if(!isSuccess) {
-      if(status === 401 && this.get('session.isAuthenticated')) {
-        this.get('session').invalidate();
+      if(status === 401 && this.session.isAuthenticated) {
+        this.session.invalidate();
       }
     }
     return isSuccess;

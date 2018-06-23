@@ -4,30 +4,30 @@ import { inject } from '@ember/service';
 export default Service.extend({
   ajax: inject(),
 
-  getApiKey: function(id) {
+  find(id) {
     let url = `/admin/api/api-keys/${id}`;
-    return this.get('ajax').request(url);
+    return this.ajax.request(url);
   },
 
-  listApiKeys: function(pageIndex, pageSize) {
+  findAll(pageIndex, pageSize) {
     let url = `/admin/api/api-keys?pageIndex=${pageIndex}&pageSize=${pageSize}`;
-    return this.get('ajax').request(url);
+    return this.ajax.request(url);
   },
 
-  removeApiKey: function(id) {
+  remove(id) {
     let url = `/admin/api/api-keys/${id}`;
-    return this.get('ajax').delete(url);
+    return this.ajax.delete(url);
   },
 
-  save(apiKey) {
-    if(!!apiKey.id) {
-      let url = `/admin/api/api-keys/${apiKey.id}`;
-      return this.get('ajax').put(url, { data: apiKey });
+  save(model) {
+    if(!!model.id) {
+      let url = `/admin/api/api-keys/${model.id}`;
+      return this.ajax.put(url, { data: model });
     } else {
       let url = `/admin/api/api-keys/`;
-      return this.get('ajax').post(url, { data: apiKey }).then(newApiKey => {
-        apiKey.id = newApiKey.id;
-        return newApiKey;
+      return this.ajax.post(url, { data: model }).then(newModel => {
+        model.id = newModel.id;
+        return newModel;
       });
     }
   }

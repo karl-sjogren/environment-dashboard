@@ -7,17 +7,17 @@ export default Route.extend(AuthenticatedRouteMixin, {
   userService: inject(),
 
   model() {
-    return this.get('userService').getUser(this.get('session.data.authenticated.userId'));
+    return this.userService.find(this.session.data.authenticated.userId);
   },
 
   actions: {
     save() {
-      let model = this.get('controller.model');
+      let model = this.controller.model;
 
       this.set('controller.accountChanged', false);
       this.set('controller.accountChangeFailed', false);
 
-      this.get('userService').save(model).then(() => {
+      this.userService.save(model).then(() => {
         this.set('controller.accountChanged', true);
       }).catch(() => {
         this.set('controller.accountChangeFailed', true);
@@ -25,13 +25,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
     },
 
     updatePassword() {
-      let model = this.get('controller.model');
-      let password = this.get('controller.newPassword');
+      let model = this.controller.model;
+      let password = this.controller.newPassword;
 
       this.set('controller.passwordChanged', false);
       this.set('controller.passwordChangeFailed', false);
 
-      this.get('userService').updatePassword(model.id, password).then(() => {
+      this.userService.updatePassword(model.id, password).then(() => {
         this.set('controller.passwordChanged', true);
       }).catch(() => {
         this.set('controller.passwordChangeFailed', true);

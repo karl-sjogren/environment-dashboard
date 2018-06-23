@@ -13,7 +13,7 @@ export default Base.extend({
     let url = `/admin/api/user/${data.userId}`;
     let authToken = data.token;
 
-    return this.get('ajax').request(url, { headers: { 'Authorization': 'Bearer ' + authToken } }).then(() => {
+    return this.ajax.request(url, { headers: { 'Authorization': 'Bearer ' + authToken } }).then(() => {
       return data;
     }).catch(() => {
       return reject();
@@ -27,7 +27,7 @@ export default Base.extend({
       password: password
     });
     
-    return this.get('ajax').post(url, { data: json });
+    return this.ajax.post(url, { data: json });
   },
 
   invalidate(/*data*/) {

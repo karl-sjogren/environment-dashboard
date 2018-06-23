@@ -4,16 +4,16 @@ import { set } from '@ember/object';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 export default Route.extend(AuthenticatedRouteMixin, {
-  apiKeyService: inject(),
+  userService: inject(),
 
   model() {
-    return this.apiKeyService.findAll(0, 100);
+    return this.userService.findAll(0, 100);
   },
 
   actions: {
-    removeApiKey(apiKey) {
-      this.apiKeyService.remove(apiKey.id);
-      set(apiKey, 'deleted', true);
+    removeUser(user) {
+      this.userService.remove(user.id);
+      set(user, 'deleted', true);
     }
   }
 });

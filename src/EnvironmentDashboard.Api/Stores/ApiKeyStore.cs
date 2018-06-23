@@ -49,12 +49,12 @@ namespace EnvironmentDashboard.Api.Stores {
 
             var collection = Database.GetCollection<ApiKey>("api-keys");
             if(apiKey.Id == null) {
-                Logger.LogInformation($"Creating new api-key for contact {apiKey.FirstName} {apiKey.LastName}.");
+                Logger.LogInformation($"Creating new api-key for contact {apiKey.Email}.");
                 apiKey.Created = apiKey.Modified = DateTime.Now;
                 await collection.InsertOneAsync(apiKey);
                 return await GetById(apiKey.Id);
             } else {
-                Logger.LogInformation($"Updating existing api-key for contact {apiKey.FirstName} {apiKey.LastName}.");
+                Logger.LogInformation($"Updating existing api-key for contact {apiKey.Email}.");
                 apiKey.Modified = DateTime.Now;
                 var result = await collection.ReplaceOneAsync(
                     filter: new BsonDocument("_id", apiKey.Id),
