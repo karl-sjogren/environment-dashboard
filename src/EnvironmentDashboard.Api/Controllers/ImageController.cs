@@ -14,6 +14,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Transforms;
+using SixLabors.Primitives;
 
 namespace EnvironmentDashboard.Api.Controllers {
     [Route("admin/api/images/")]
@@ -35,6 +41,14 @@ namespace EnvironmentDashboard.Api.Controllers {
         [HttpGet("image-stream")]
         public async Task GetImageStream() {
             string continuationToken = null;
+            Int32? maxWidth = null;
+
+            if(Request.Headers.ContainsKey("Viewport-Width")) {
+                var viewportWidth = Request.Headers["Viewport-Width"].First();
+                if(Int32.TryParse(viewportWidth, out var tmp))
+                    maxWidth = tmp;
+            }
+            
             var objects = new List<S3Object>();
             do {
                 var request = new ListObjectsV2Request();
@@ -73,7 +87,29 @@ namespace EnvironmentDashboard.Api.Controllers {
                     await sr.WriteLineAsync();
                 }
 
-                await response.ResponseStream.CopyToAsync(Response.Body);
+                if(maxWidth.HasValue) {
+                    using(Image<Rgba32> image = Image.Load(response.ResponseStream)) {
+                        var resizeOptions = new ResizeOptions {
+                            Mode = ResizeMode.Max,
+                            Position = AnchorPositionMode.TopLeft,
+                            Size = new Size(maxWidth.Value, maxWidth.Value)
+                        };
+
+                        if(image.Width > maxWidth.Value) {
+                            image.Mutate(x => x
+                                .Resize(resizeOptions));
+                        }
+
+                        var imageEncoder = new JpegEncoder {
+                            Quality = 60
+                        };
+                        
+                        image.Save(Response.Body, imageEncoder);
+                    }
+                } else {
+
+                    await response.ResponseStream.CopyToAsync(Response.Body);
+                }
 
                 using(var sr = new StreamWriter(Response.Body, encoding, 4096, true)) {
                     await sr.WriteLineAsync("--" + boundary);
