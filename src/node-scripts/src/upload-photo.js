@@ -1,19 +1,22 @@
-import PiCamera from 'pi-camera';
-import EnvironmentClient from './env-client';
+const PiCamera = require('pi-camera');
+const os = require('os');
+const EnvironmentClient = require('../src/env-client');
 
-let client = new EnvironmentClient(process.env.API_URL, process.env.API_KEY);
+const client = new EnvironmentClient(process.env.ED_API_URL, process.env.ED_API_KEY);
 
-let camera = new PiCamera({
+const imagePath = `${os.tmpdir()}/tmp-photo.jpg`;
+
+const camera = new PiCamera({
   mode: 'photo',
-  output: `${__dirname}/tmp-photo.jpg`,
+  output: imagePath,
   width: 1280,
   height: 720,
-  nopreview: true,
+  nopreview: true
 });
 
 camera.snap()
   .then(result => {
-    return client.uploadPhoto(result);
+    return client.uploadPhoto(imagePath);
   }).catch(error => {
     console.error(error);
   });

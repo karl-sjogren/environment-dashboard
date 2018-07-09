@@ -6,13 +6,13 @@ export default Controller.extend({
   confirmDialogOpen: false,
 
   apiKeyToRemoveName: computed('apiKeyToRemove', function() {
-    let apiKey = this.get('apiKeyToRemove');
+    let apiKey = this.apiKeyToRemove;
 
     if(!apiKey) {
       return '';
     }
 
-    return `nyckeln tillhörande ${apiKey.firstName} ${apiKey.lastName}`;
+    return `the key belonging to ${apiKey.name}`;
   }),
 
   actions: {
@@ -24,7 +24,7 @@ export default Controller.extend({
     },
 
     confirmRemove() {
-      this.send('removeApiKey', this.get('apiKeyToRemove'));
+      this.send('removeApiKey', this.apiKeyToRemove);
       this.setProperties({
         apiKeyToRemove: null,
         confirmDialogOpen: false

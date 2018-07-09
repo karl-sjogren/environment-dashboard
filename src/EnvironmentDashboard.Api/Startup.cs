@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -33,6 +34,8 @@ namespace EnvironmentDashboard.Api {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddSingleton<ISystemClock, SystemClock>();
+
             services.AddOptions();
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);;

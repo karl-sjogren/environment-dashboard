@@ -1,13 +1,4 @@
-import EnvironmentClient from '../src/env-client';
-import Promise from 'bluebird';
+const EnvironmentClient = require('../src/env-client');
 
-var readFile = Promise.promisify(require("fs").readFile);
-
-let client = new EnvironmentClient(process.env.API_URL, process.env.API_KEY);
-
-readFile('sample-image.jpg')
-  .then(result => {
-    return client.uploadPhoto(result);
-  }).catch(error => {
-
-  });
+const client = new EnvironmentClient(process.env.ED_API_URL, process.env.ED_API_KEY);
+return client.uploadPhoto('./sample-image.jpg');

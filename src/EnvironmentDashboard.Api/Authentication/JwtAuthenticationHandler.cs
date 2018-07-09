@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -36,8 +37,12 @@ namespace EnvironmentDashboard.Api.Authentication {
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync() {
-            string token = null;
-            string authorization = Request.Headers["Authorization"];
+            var token = (string)null;
+            var authorization = Request.Headers["Authorization"].FirstOrDefault();
+
+            if(string.IsNullOrEmpty(authorization)) {
+                authorization = Request.Query["token"].FirstOrDefault();
+            }
 
             if(string.IsNullOrEmpty(authorization)) {
                 return AuthenticateResult.NoResult();
@@ -45,6 +50,8 @@ namespace EnvironmentDashboard.Api.Authentication {
 
             if(authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)) {
                 token = authorization.Substring("Bearer ".Length).Trim();
+            } else {
+                token = authorization;
             }
 
             if(string.IsNullOrEmpty(token)) {

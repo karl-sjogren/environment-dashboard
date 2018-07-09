@@ -29,7 +29,7 @@ namespace EnvironmentDashboard.Api.Controllers {
             _systemClock = systemClock;
         }
 
-        private string BucketPrefix => _systemClock.UtcNow.ToString("yyyy-mm-dd");
+        private string BucketPrefix => _systemClock.UtcNow.ToString("yyyy-MM-dd");
 
         [Authorize(Policy = "AdminUser")]
         [HttpGet("image-stream")]
@@ -96,8 +96,13 @@ namespace EnvironmentDashboard.Api.Controllers {
             
             var fileName = BucketPrefix + "/" + _systemClock.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss") + extension;
 
-            var utility = new TransferUtility(_client);
-            await utility.UploadAsync(Request.Body, _options.BucketName, fileName);
+            using(var ms = new MemoryStream()) {
+                await Request.Body.CopyToAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                var utility = new TransferUtility(_client);
+
+                await utility.UploadAsync(ms, _options.BucketName, fileName);
+            }
             
             return NoContent();
         }

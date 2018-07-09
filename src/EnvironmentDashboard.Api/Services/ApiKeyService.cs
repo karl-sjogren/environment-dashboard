@@ -17,6 +17,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Microsoft.Extensions.Options;
 using EnvironmentDashboard.Api.Options;
+using MailKit.Security;
 
 namespace EnvironmentDashboard.Api.Services {
     public class ApiKeyService : IApiKeyService {
@@ -62,7 +63,13 @@ Email: {apiKey.Email}
 			};
 
 			using(var client = new SmtpClient()) {
-				client.Connect(_smtpOptions.Host, _smtpOptions.Port, true);
+                if(_smtpOptions.Port == 587)
+				    client.Connect(_smtpOptions.Host, _smtpOptions.Port, SecureSocketOptions.StartTls);
+                else if(_smtpOptions.Port == 465)
+				    client.Connect(_smtpOptions.Host, _smtpOptions.Port, true);
+                else 
+				    client.Connect(_smtpOptions.Host, _smtpOptions.Port, false);
+
                 await client.AuthenticateAsync(_smtpOptions.Username, _smtpOptions.Password);
 
 				client.Send(message);

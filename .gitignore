@@ -296,3 +296,6 @@ src/EnvironmentDashboard.Api/wwwroot/**
 
 # OSX crap
 .DS_Store
+
+# SFTP settings
+.vscode/sftp.json

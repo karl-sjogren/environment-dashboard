@@ -2,6 +2,7 @@
 @import "variables.less";
 @import "icons.less";
 @import "login-page.less";
+@import "dialogs.less";
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -22,29 +23,29 @@ h2 {
 }
 
 button {
-  border: 1px solid darken(@primary-color, 30%);
-  background-color: @primary-color;
+  border: 1px solid @button-border-color;
+  background-color: @button-color;
   min-height: 30px;
   border-radius: 5px;
+
+  &[disabled] {
+    background-color: lighten(@button-color, 20%);
+    border-color: lighten(@button-border-color, 50%);
+  }
 }
 
 form {
   .form-group {
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+    flex-direction: column;
 
     > * {
       flex: 1;
     }
 
-    label {
-      max-width: 350px;
-      padding-right: 12px;
-    }
-
     input[type="text"],
     input[type="password"] {
-      max-width: 350px;
       border: 0;
       border-bottom: 1px solid @primary-color;
     }
@@ -152,8 +153,16 @@ nav {
 
   form {
     .form-group {
+      flex-direction: row;
+
       label {
         min-width: 200px;
+        max-width: 350px;
+        padding-right: 12px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
         max-width: 350px;
       }
     }

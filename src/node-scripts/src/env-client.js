@@ -1,22 +1,23 @@
-import fetch from 'node-fetch';
-import url from 'url';
+const fetch = require('node-fetch');
+const url = require('url');
+const createReadStream = require('fs').createReadStream;
 
-export default class EnvironmentClient {
+module.exports = class EnvironmentClient {
   constructor(baseUrl, apiKey) {
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;   
   }
 
-  uploadPhoto(buffer) {
+  uploadPhoto(path) {
+    const stream = createReadStream(path);
     return fetch(url.resolve(this.baseUrl, '/admin/api/images/image-stream'), { // Your POST endpoint
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + this.apiKey,
         'Content-Type': 'image/jpeg'
       },
-      body: binary
+      body: stream
     })
-    .then(result => result.json())
     .then(result => {
       console.info('Successfully uploaded binary to dashboard.');
       return result;
