@@ -105,25 +105,25 @@ namespace EnvironmentDashboard.Api {
 
             if(env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-
-                app.Use(async (context, next) => {
-                    await next();
-                    
-                    if(context.Request.Method != "GET")
-                        return;
-                    
-                    if(context.Response.StatusCode != 404)
-                        return;
-                    
-                    if(context.Request.Path.ToString().Contains("admin/"))
-                        return;
-
-                    // Rewrite to index.html and execute again
-                    context.Request.Path = new PathString("/index.html");
-
-                    await next();
-                });
             }
+
+            app.Use(async (context, next) => {
+                await next();
+                
+                if(context.Request.Method != "GET")
+                    return;
+                
+                if(context.Response.StatusCode != 404)
+                    return;
+                
+                if(context.Request.Path.ToString().Contains("admin/"))
+                    return;
+
+                // Rewrite to index.html and execute again
+                context.Request.Path = new PathString("/index.html");
+
+                await next();
+            });
 
             // Serves index.html from wwwroot
             app.UseDefaultFiles();

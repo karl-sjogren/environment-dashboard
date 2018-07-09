@@ -1,6 +1,6 @@
-import { inject } from '@ember/service';
-import { computed } from '@ember/object';
 import AjaxService from 'ember-ajax/services/ajax';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 
 export default AjaxService.extend({
   session: inject(),
