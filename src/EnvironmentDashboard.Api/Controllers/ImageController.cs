@@ -14,10 +14,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Options;
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Text;
 using SixLabors.ImageSharp.Processing.Transforms;
 using SixLabors.Primitives;
 
@@ -37,19 +39,9 @@ namespace EnvironmentDashboard.Api.Controllers {
 
         private string BucketPrefix => _systemClock.UtcNow.ToString("yyyy-MM-dd");
 
-        [Authorize(Policy = "AdminUser")]
-        [HttpGet("image-stream")]
-        public async Task GetImageStream() {
+        private IEnumerable<S3Object> GetTodaysImages() {
             string continuationToken = null;
-            Int32? maxWidth = null;
 
-            if(Request.Headers.ContainsKey("Viewport-Width")) {
-                var viewportWidth = Request.Headers["Viewport-Width"].First();
-                if(Int32.TryParse(viewportWidth, out var tmp))
-                    maxWidth = tmp;
-            }
-            
-            var objects = new List<S3Object>();
             do {
                 var request = new ListObjectsV2Request();
                 request.BucketName = _options.BucketName;
@@ -57,13 +49,29 @@ namespace EnvironmentDashboard.Api.Controllers {
                 request.Prefix = BucketPrefix;
                 request.ContinuationToken = continuationToken;
                 
-                var response = await _client.ListObjectsV2Async(request);
+                // Doing this sync to keep this an IEnumerable
+                var response = _client.ListObjectsV2Async(request).GetAwaiter().GetResult();
                 continuationToken = response.ContinuationToken;
 
-                objects.AddRange(response.S3Objects);
+                foreach(var obj in response.S3Objects)
+                    yield return obj;
             } while(!string.IsNullOrWhiteSpace(continuationToken));
+        }
 
-            objects = objects.OrderByDescending(o => o.LastModified).ToList();
+        [Authorize(Policy = "AdminUser")]
+        [HttpGet("image-stream")]
+        public async Task GetImageStream() {
+            var mimeType = "image/jpeg";
+            Int32? maxWidth = null;
+
+            if(Request.Headers.ContainsKey("Viewport-Width")) {
+                var viewportWidth = Request.Headers["Viewport-Width"].First();
+                if(Int32.TryParse(viewportWidth, out var tmp))
+                    maxWidth = tmp;
+            }
+        
+            var objects = GetTodaysImages();
+            objects = objects.OrderBy(o => o.LastModified).ToList();
 
             var boundary = Guid.NewGuid().ToString("d");
             Response.Headers.Add("Content-Type", "multipart/x-mixed-replace; boundary=" + boundary);
@@ -77,38 +85,20 @@ namespace EnvironmentDashboard.Api.Controllers {
                 request.Key = obj.Key;
 
                 var response = await _client.GetObjectAsync(request);
-                
-                var mimeType = "image/jpeg";
-                if(Path.GetExtension(response.Key)?.Equals(".png", StringComparison.OrdinalIgnoreCase) == true)
-                    mimeType = "image/png";
 
                 using(var sr = new StreamWriter(Response.Body, encoding, 4096, true)) {
                     await sr.WriteLineAsync("Content-type: " + mimeType);
                     await sr.WriteLineAsync();
                 }
 
-                if(maxWidth.HasValue) {
-                    using(Image<Rgba32> image = Image.Load(response.ResponseStream)) {
-                        var resizeOptions = new ResizeOptions {
-                            Mode = ResizeMode.Max,
-                            Position = AnchorPositionMode.TopLeft,
-                            Size = new Size(maxWidth.Value, maxWidth.Value)
-                        };
+                using(Image<Rgba32> image = Image.Load(response.ResponseStream)) {
+                    MutateImage(image, maxWidth, obj.LastModified);
 
-                        if(image.Width > maxWidth.Value) {
-                            image.Mutate(x => x
-                                .Resize(resizeOptions));
-                        }
-
-                        var imageEncoder = new JpegEncoder {
-                            Quality = 60
-                        };
-                        
-                        image.Save(Response.Body, imageEncoder);
-                    }
-                } else {
-
-                    await response.ResponseStream.CopyToAsync(Response.Body);
+                    var imageEncoder = new JpegEncoder {
+                        Quality = 70
+                    };
+                    
+                    image.Save(Response.Body, imageEncoder);
                 }
 
                 using(var sr = new StreamWriter(Response.Body, encoding, 4096, true)) {
@@ -116,7 +106,71 @@ namespace EnvironmentDashboard.Api.Controllers {
                 }
 
                 await Response.Body.FlushAsync();
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                await Task.Delay(TimeSpan.FromMilliseconds(250));
+            }
+        }
+
+        private void MutateImage(Image<Rgba32> image, Int32? maxWidth, DateTime lastModified) {
+            var text = lastModified.ToString("HH:mm");
+            var font = SystemFonts.CreateFont("Arial", 39, FontStyle.Regular);
+
+            if(maxWidth.HasValue) {
+                var resizeOptions = new ResizeOptions {
+                    Mode = ResizeMode.Max,
+                    Position = AnchorPositionMode.TopLeft,
+                    Size = new Size(maxWidth.Value, maxWidth.Value)
+                };
+
+                if(image.Width > maxWidth.Value) {
+                    image.Mutate(x => x
+                        .Resize(resizeOptions));
+                }
+            }
+            
+            var textGraphicsOptions = new TextGraphicsOptions(true) {
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            image.Mutate(x => x
+                .DrawText(textGraphicsOptions, text, font, Rgba32.LawnGreen, new PointF(image.Width - 10f, image.Height - 10f))
+            );
+        }
+    
+        [Authorize(Policy = "AdminUser")]
+        [HttpGet("latest")]
+        public async Task GetLatestImage() {
+            Int32? maxWidth = null;
+
+            if(Request.Headers.ContainsKey("Viewport-Width")) {
+                var viewportWidth = Request.Headers["Viewport-Width"].First();
+                if(Int32.TryParse(viewportWidth, out var tmp))
+                    maxWidth = tmp;
+            }
+        
+            var objects = GetTodaysImages();
+            var obj = objects.OrderByDescending(o => o.LastModified).FirstOrDefault();
+
+            var encoding = new UTF8Encoding(false);
+
+            var request = new GetObjectRequest();
+            request.BucketName = _options.BucketName;
+            request.Key = obj.Key;
+
+            var response = await _client.GetObjectAsync(request);
+            
+            var mimeType = "image/jpeg";
+            Response.Headers.Add("Content-Type", mimeType);
+            Response.StatusCode = (Int32)HttpStatusCode.OK;
+
+            using(Image<Rgba32> image = Image.Load(response.ResponseStream)) {
+                MutateImage(image, maxWidth, obj.LastModified);
+
+                var imageEncoder = new JpegEncoder {
+                    Quality = 80
+                };
+                
+                image.Save(Response.Body, imageEncoder);
             }
         }
 
