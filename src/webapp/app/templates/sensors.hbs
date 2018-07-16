@@ -1,0 +1,46 @@
+{{scroll-top}}
+<section class="page sensors">
+  <div>
+    <h1>
+      Sensors
+    </h1>
+
+    {{#link-to 'sensor' 'new' tagName='button' class='btn-primary add-sensor'}}New sensor{{/link-to}}
+  </div>
+
+  {{remove-confirm-dialog open=confirmDialogOpen itemName=sensorToRemoveName closeAction=(action 'closeConfirmDialog') confirmAction=(action 'confirmRemove')}}
+
+  <section class="search-result-container">
+    <span class="search-result-info">There is a total of <span class="search-value">{{model.totalCount}}</span> registered sensors.</span>
+    <ul>
+      {{#each model.items as |sensor|}}
+        {{#unless sensor.deleted}}
+          <li>
+            <article class="column-container">
+              <div class="column">
+                <div class="api-key-name">
+                  <h1>{{sensor.name}}</h1>
+                  <span class="type">{{sensor.type}}</span>
+                </div>
+              </div>
+              <div class="column">
+                <div class="sensor-key">
+                  <span>Sensor key: {{sensor.id}}</span>
+                </div>
+              </div>
+              <div class="column interaction-column">
+                {{#link-to 'sensor' sensor.id tagName='button' class='btn edit-api-key-btn' }}
+                  <span class="btn-text">Edit</span>
+                {{/link-to}}
+
+                <button class="btn remove-author-btn" {{action 'showConfirmDialog' sensor}}>
+                  <span class="btn-text">Remove</span>
+                </button>
+              </div>
+            </article>
+          </li>
+        {{/unless}}
+      {{/each}}
+    </ul>
+  </section>
+</section>

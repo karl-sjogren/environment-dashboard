@@ -13,6 +13,9 @@ Router.map(function() {
 
   this.route('api-keys');
   this.route('api-key', { path: '/api-key/:api_key_id' });
+
+  this.route('sensors');
+  this.route('sensor', { path: '/sensor/:sensor_id' });
 });
 
 export default Router;

@@ -1,7 +1,7 @@
 {{scroll-top}}
-<div class="page api.key">
+<div class="page sensor">
   <section>  
-    <h1>API key</h1>
+    <h1>Sensor</h1>
     <form>
       <div class="form-group">
         <label for="name">Name</label>
@@ -9,15 +9,18 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Contact email</label>
-        {{input type='text' id='email' value=model.email autocomplete='email'}}
+        <label for="type">Type</label>
+        {{#x-select value=model.type action=(action 'selectType') as |xs|}}
+          {{#xs.option value='temperature'}}Temperature{{/xs.option}}
+          {{#xs.option value='rain'}}Rain{{/xs.option}}
+        {{/x-select}}
       </div>
 
-      {{#if apiKeyChanged}}
+      {{#if sensorChanged}}
         <span class="alert alert-good-stuff-happened">Your changes were saved.</span>
       {{/if}}
 
-      {{#if apiKeyChangeFailed}}
+      {{#if sensorChangeFailed}}
         <span class="alert alert-error">Something went wrong while saving the changes.</span>
       {{/if}}
 

@@ -11,10 +11,10 @@ namespace EnvironmentDashboard.Api.Controllers {
     [Authorize(Policy = "AdminUser")]
     [Route("admin/api/sensors/")]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class SensorsController : Controller {
+    public class SensorController : Controller {
         private readonly ISensorStore _sensorStore;
 
-        public SensorsController(ISensorStore sensorStore) {
+        public SensorController(ISensorStore sensorStore) {
             _sensorStore = sensorStore;
         }
 
