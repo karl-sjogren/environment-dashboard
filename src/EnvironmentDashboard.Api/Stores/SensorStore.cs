@@ -62,10 +62,28 @@ namespace EnvironmentDashboard.Api.Stores {
             }
         }
 
+        public async Task SaveValue(SensorValue value) {
+            var sensor = await GetById(value.SensorId);
+            if(sensor == null) {
+                throw new InvalidOperationException("Invalid sensor id specified for value. " + value.SensorId);
+            }
+
+            var collection = Database.GetCollection<SensorValue>("sensor-value");
+            
+            value.Created = DateTime.Now;
+            await collection.InsertOneAsync(value);
+        }
+
         public async Task Delete(string id) {
             Logger.LogInformation($"Removing sensor with id {id}.");
             var collection = Database.GetCollection<Sensor>("sensors");
             await collection.DeleteOneAsync(new BsonDocument("_id", id));
+        }
+
+        public async Task DeleteValues(string sensorId) {
+            Logger.LogInformation($"Removing values for sensor id {sensorId}.");
+            var collection = Database.GetCollection<Sensor>("sensor-values");
+            await collection.DeleteOneAsync(new BsonDocument("SensorId", sensorId));
         }
     }
 }

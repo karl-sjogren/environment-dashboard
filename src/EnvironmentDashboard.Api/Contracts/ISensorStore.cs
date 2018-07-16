@@ -14,6 +14,8 @@ namespace EnvironmentDashboard.Api.Contracts {
         Task<ICollection<Sensor>> GetById(string[] ids);
         Task<PaginatedResult<Sensor>> GetPaged(Int32 pageIndex, Int32 pageSize);
         Task<Sensor> Save(Sensor sensor);
+        Task SaveValue(SensorValue value);
         Task Delete(string id);
+        Task DeleteValues(string sensorId);
     }
 }
