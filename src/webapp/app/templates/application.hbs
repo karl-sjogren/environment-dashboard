@@ -1,5 +1,9 @@
 
 {{#if session.isAuthenticated}}
+  <button {{action 'toggleMenu'}} class="menu-button icon-menu">
+    <span class="button-text">Toggle menu</span>
+  </button>
+
   <header>
     {{#link-to 'index'}}
       <img src="/assets/images/logo.png"/>
@@ -7,7 +11,7 @@
     <h1 class="sr-only">Environment dashboard</h1>
   </header>
   <aside>
-    <nav>
+    <nav {{action 'toggleMenu'}} class={{if menuOpen 'open'}}>
       <ul>
         {{#link-to 'cameras' tagName='li' class='menu-sensors icon-camera' current-when='cameras camera'}}
           <span class="menu-text">Cameras</span>
@@ -21,9 +25,11 @@
         {{#link-to 'account' tagName='li' class='menu-account icon-user'}}
           <span class="menu-text">User information</span>
         {{/link-to}}
+        {{!-- 
         {{#link-to 'account' tagName='li' class='menu-users icon-users'}}
           <span class="menu-text">Users</span>
         {{/link-to}}
+        --}}
         <li {{action 'invalidateSession' }} class="menu-logout icon-logout">
           <span class="menu-text">Logout</span>
         </li>

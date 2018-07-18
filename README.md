@@ -28,6 +28,15 @@ Gonna write this later.
 
 ### Checkout scripts
 
+The easiest way to get the node scripts is to simply clone this whole repository.
+
+```
+git clone https://github.com/karl-sjogren/environment-dashboard.git envdashboard
+```
+
+To get a smaller (and faster) checkout a sparse checkout can be used by running
+the script below.
+
 ```
 git init envdashboard
 cd envdashboard
