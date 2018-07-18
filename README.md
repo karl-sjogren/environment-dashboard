@@ -8,7 +8,7 @@ It can preferably be deployed to Heroku using the following buildpack.
 
 https://github.com/karl-sjogren/dotnetcore-buildpack/tree/environment-dashboard
 
-## Setup
+## API setup
 
 Required environment variables or user secrets.
 
@@ -18,6 +18,31 @@ Required environment variables or user secrets.
 - AWS_BUCKET_NAME
 - AWS_REGION
 
+## Node setup
+
+This has been tested using Raspbian June 2018.
+
+### Install the BCM2835 driver
+
+Gonna write this later.
+
+### Checkout scripts
+
+```
+git init envdashboard
+cd envdashboard
+git remote add origin https://github.com/karl-sjogren/environment-dashboard.git
+git config core.sparsecheckout true
+echo "src/node-scripts/" >> .git/info/sparse-checkout
+git pull origin master
+```
+
+To get updates for the node scripts later just run `git pull origin master` in the envdashboard folder.
+
+### Add cronjobs
+
+Gonna write this later.
+
 ## Attributions
 
 Default logo from https://pixabay.com/sv/milj%C3%B6-friendly-eco-natur-3420052/,
@@ -25,3 +50,8 @@ licensed under Creative Commons Zero.
 
 Sample image from https://pixabay.com/sv/giraff-zebra-afrika-safari-djurliv-1082168/,
 licensed under Creative Commons Zero.
+
+Also see [nodes-cripts/packages.json](src/node-scripts/package.json) and
+[webapp/packages.json](src/webapp/package.json) for npm packages. See
+[EnvironmentDashboard.Api/EnvironmentDashboard.Api.csproj](src/EnvironmentDashboard.Api/EnvironmentDashboard.Api.csproj)
+for nuget packages.
