@@ -2,38 +2,38 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  sensorToRemove: null,
+  cameraToRemove: null,
   confirmDialogOpen: false,
 
-  sensorToRemoveName: computed('sensorToRemove', function() {
-    let sensor = this.sensorToRemove;
+  cameraToRemoveName: computed('cameraToRemove', function() {
+    let camera = this.cameraToRemove;
 
-    if(!sensor) {
+    if(!camera) {
       return '';
     }
 
-    return `the sensor named ${sensor.name}`;
+    return `the camera named ${camera.name}`;
   }),
 
   actions: {
-    showConfirmDialog(sensor) {
+    showConfirmDialog(camera) {
       this.setProperties({
-        sensorToRemove: sensor,
+        cameraToRemove: camera,
         confirmDialogOpen: true
       });
     },
 
     confirmRemove() {
-      this.send('removeSensor', this.sensorToRemove);
+      this.send('removeCamera', this.cameraToRemove);
       this.setProperties({
-        sensorToRemove: null,
+        cameraToRemove: null,
         confirmDialogOpen: false
       });
     },
 
     closeConfirmDialog() {
       this.setProperties({
-        sensorToRemove: null,
+        cameraToRemove: null,
         confirmDialogOpen: false
       });
     }

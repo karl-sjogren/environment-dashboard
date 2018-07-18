@@ -25,12 +25,12 @@ namespace EnvironmentDashboard.Api.Controllers {
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSensor([FromRoute] string id) {
-            var user = await _sensorStore.GetById(id);
+            var sensor = await _sensorStore.GetById(id);
 
-            if(user == null)
+            if(sensor == null)
                 return NotFound();
 
-            return Json(user);
+            return Json(sensor);
         }
 
         [HttpPost]

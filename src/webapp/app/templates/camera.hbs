@@ -1,0 +1,22 @@
+{{scroll-top}}
+<div class="page camera">
+  <section>  
+    <h1>Camera</h1>
+    <form>
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{input type='text' id='name' value=model.name}}
+      </div>
+
+      {{#if cameraChanged}}
+        <span class="alert alert-good-stuff-happened">Your changes were saved.</span>
+      {{/if}}
+
+      {{#if cameraChangeFailed}}
+        <span class="alert alert-error">Something went wrong while saving the changes.</span>
+      {{/if}}
+
+      <button class="btn-primary" {{action 'save'}}>Save</button>
+    </form>
+  </section>
+</div>

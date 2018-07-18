@@ -41,6 +41,12 @@
       "css": "thermometer",
       "code": 59397,
       "src": "typicons"
+    },
+    {
+      "uid": "85017ab6ca074831a8de771b40e9640c",
+      "css": "camera",
+      "code": 59398,
+      "src": "entypo"
     }
   ]
 }

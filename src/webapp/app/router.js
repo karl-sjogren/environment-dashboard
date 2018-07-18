@@ -16,6 +16,9 @@ Router.map(function() {
 
   this.route('sensors');
   this.route('sensor', { path: '/sensor/:sensor_id' });
+
+  this.route('cameras');
+  this.route('camera', { path: '/camera/:camera_id' });
 });
 
 export default Router;

@@ -21,6 +21,16 @@ namespace EnvironmentDashboard.Api.Stores {
                 cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
             });
 
+            BsonClassMap.RegisterClassMap<SensorValue>(cm => {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
+
+            BsonClassMap.RegisterClassMap<Camera>(cm => {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
+
             BsonClassMap.RegisterClassMap<User>(cm => {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);

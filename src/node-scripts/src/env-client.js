@@ -8,9 +8,11 @@ module.exports = class EnvironmentClient {
     this.apiKey = apiKey;   
   }
 
-  uploadPhoto(path) {
+  uploadPhoto(cameraId, path) {
     const stream = createReadStream(path);
-    return fetch(url.resolve(this.baseUrl, '/admin/api/images/image-stream'), { // Your POST endpoint
+    let uploadUrl = url.resolve(this.baseUrl, `/admin/api/cameras/${cameraId}/upload-image`);
+    console.info(`Uploading binary to ${uploadUrl}.`);
+    return fetch(uploadUrl, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + this.apiKey,

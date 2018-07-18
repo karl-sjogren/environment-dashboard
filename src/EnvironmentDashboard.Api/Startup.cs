@@ -74,10 +74,12 @@ namespace EnvironmentDashboard.Api {
             services.AddSingleton<IMongoClient>(mongoClient);
 
             services.AddScoped<IApiKeyStore, ApiKeyStore>();
+            services.AddScoped<ICameraStore, CameraStore>();
             services.AddScoped<ISensorStore, SensorStore>();
             services.AddScoped<IUserStore, UserStore>();
 
             services.AddScoped<IApiKeyService, ApiKeyService>();
+            services.AddScoped<IImageService, ImageService>();
 
             // The initializers should be executed in order
             services.AddSingleton<IInitializer, AutoMapperInitializer>();

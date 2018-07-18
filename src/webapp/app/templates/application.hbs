@@ -9,10 +9,13 @@
   <aside>
     <nav>
       <ul>
-        {{#link-to 'sensors' tagName='li' class='menu-sensors icon-thermometer'}}
+        {{#link-to 'cameras' tagName='li' class='menu-sensors icon-camera' current-when='cameras camera'}}
+          <span class="menu-text">Cameras</span>
+        {{/link-to}}
+        {{#link-to 'sensors' tagName='li' class='menu-sensors icon-thermometer' current-when='sensors sensor'}}
           <span class="menu-text">Sensors</span>
         {{/link-to}}
-        {{#link-to 'api-keys' tagName='li' class='menu-api-keys icon-key'}}
+        {{#link-to 'api-keys' tagName='li' class='menu-api-keys icon-key' current-when='api-keys api-key'}}
           <span class="menu-text">API keys</span>
         {{/link-to}}
         {{#link-to 'account' tagName='li' class='menu-account icon-user'}}

@@ -1,0 +1,45 @@
+{{scroll-top}}
+<section class="page cameras">
+  <div>
+    <h1>
+      Cameras
+    </h1>
+
+    {{#link-to 'camera' 'new' tagName='button' class='btn-primary add-camera'}}New camera{{/link-to}}
+  </div>
+
+  {{remove-confirm-dialog open=confirmDialogOpen itemName=cameraToRemoveName closeAction=(action 'closeConfirmDialog') confirmAction=(action 'confirmRemove')}}
+
+  <section class="search-result-container">
+    <span class="search-result-info">There is a total of <span class="search-value">{{model.totalCount}}</span> registered cameras.</span>
+    <ul>
+      {{#each model.items as |camera|}}
+        {{#unless camera.deleted}}
+          <li>
+            <article class="column-container">
+              <div class="column">
+                <div class="camera-name">
+                  <h1>{{camera.name}}</h1>
+                </div>
+              </div>
+              <div class="column">
+                <div class="camera-key">
+                  <span>Camera key: {{camera.id}}</span>
+                </div>
+              </div>
+              <div class="column interaction-column">
+                {{#link-to 'camera' camera.id tagName='button' class='btn edit-camera-btn' }}
+                  <span class="btn-text">Edit</span>
+                {{/link-to}}
+
+                <button class="btn remove-camera-btn" {{action 'showConfirmDialog' camera}}>
+                  <span class="btn-text">Remove</span>
+                </button>
+              </div>
+            </article>
+          </li>
+        {{/unless}}
+      {{/each}}
+    </ul>
+  </section>
+</section>
