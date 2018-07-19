@@ -1,0 +1,18 @@
+<h1>{{forecast.location}}</h1>
+
+<span class="temperature">{{firstPeriod.temperature}}&deg; C</span>
+{{yr-forecast-icon period=firstPeriod}}
+<span class="chevron {{if expanded 'bottom' 'top'}}" {{action 'toggleExpanded'}}></span>
+
+{{#if expanded}}
+  <ol>
+    {{#each (take forecast.timeperiods 12) as |period|}}
+      <li>
+        <h2>{{format-date period.from format='DD/MM HH'}}&ndash;{{format-date period.to format='HH'}}</h2>
+
+        <span class="temperature">{{period.temperature}}&deg; C</span>
+        {{yr-forecast-icon period=period}}
+      </li>
+    {{/each}}
+  </ol>
+{{/if}}

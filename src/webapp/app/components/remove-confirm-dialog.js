@@ -7,11 +7,11 @@ export default Component.extend({
 
   actions: {
     closeDialog() {
-      this.get('closeAction')();
+      this.closeAction();
     },
 
     confirm() {
-      this.get('confirmAction')();
+      this.confirmAction();
     }
   }
 });

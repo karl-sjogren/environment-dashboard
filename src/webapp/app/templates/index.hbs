@@ -2,9 +2,9 @@
 <section class="page dashboard">
   <div>
     <h1>Welcome {{session.data.authenticated.name}}!</h1>
-
-    <p>This page is still a work in progress and will feature some kind of dashboard.</p>
   </div>
+
+  {{yr-forecast forecast=forecast}}
 
   {{#each cameras.items as |camera|}}
     {{latest-camera-image cameraId=camera.id}}
