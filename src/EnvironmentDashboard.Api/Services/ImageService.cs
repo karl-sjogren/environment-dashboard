@@ -11,6 +11,7 @@ using EnvironmentDashboard.Api.Contracts;
 using EnvironmentDashboard.Api.Models;
 using EnvironmentDashboard.Api.Options;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
@@ -23,26 +24,32 @@ using SixLabors.Primitives;
 
 namespace EnvironmentDashboard.Api.Services {
     public class ImageService : IImageService {
+        private readonly ILogger<ImageService> _log;
         private readonly AmazonWebServicesOptions _options;
         private readonly IAmazonS3 _client;
         private readonly ISystemClock _systemClock;
 
-        public ImageService(IOptions<AmazonWebServicesOptions> optionsAccessor, ISystemClock systemClock) {
+        public ImageService(IOptions<AmazonWebServicesOptions> optionsAccessor, ISystemClock systemClock, ILogger<ImageService> log) {
             _options = optionsAccessor.Value;
             _client = new AmazonS3Client(_options.AccessKey, _options.SecretKey, _options.Region);
             _systemClock = systemClock;
+            _log = log;
         }
 
-        private string BucketPrefix => _systemClock.UtcNow.ToString("yyyy-MM-dd");
+        private string GetBucketPrefix(DateTimeOffset date, Camera camera) {
+            var prefix = $"{date.ToUniversalTime():yyyy-MM-dd)}/{camera.Id}";
+            _log.LogDebug("Calculated prefix: " + prefix);
+            return prefix;
+        }
 
-        private IEnumerable<S3Object> GetTodaysImages(Camera camera) {
+        private IEnumerable<S3Object> GetImagesForDate(DateTimeOffset date, Camera camera) {
             string continuationToken = null;
 
             do {
                 var request = new ListObjectsV2Request();
                 request.BucketName = _options.BucketName;
                 request.MaxKeys = 1000;
-                request.Prefix = BucketPrefix + "/" + camera.Id;
+                request.Prefix = GetBucketPrefix(date, camera);
                 request.ContinuationToken = continuationToken;
                 
                 // Doing this sync to keep this an IEnumerable
@@ -52,6 +59,24 @@ namespace EnvironmentDashboard.Api.Services {
                 foreach(var obj in response.S3Objects)
                     yield return obj;
             } while(!string.IsNullOrWhiteSpace(continuationToken));
+        }
+
+        private IEnumerable<S3Object> GetLatestImages(Camera camera) {
+            var gotImages = false;
+
+            foreach(var obj in GetImagesForDate(_systemClock.UtcNow, camera)) {
+                gotImages = true;
+                yield return obj;
+            }
+
+            if(gotImages)
+                yield break;
+
+            _log.LogInformation("No images available for today, trying yesterday.");
+            
+            foreach(var obj in GetImagesForDate(_systemClock.UtcNow.AddDays(-1), camera)) {
+                yield return obj;
+            }
         }
 
         private void MutateImage(Image<Rgba32> image, Int32? maxWidth, DateTime lastModified) {
@@ -84,9 +109,8 @@ namespace EnvironmentDashboard.Api.Services {
         public async Task WriteReplacingHttpStream(Camera camera, Stream stream, string boundary, Int32? maxWidth) {
             var mimeType = "image/jpeg";
         
-            var objects = GetTodaysImages(camera);
+            var objects = GetLatestImages(camera);
             objects = objects.OrderBy(o => o.LastModified).ToList();
-
 
             var encoding = new UTF8Encoding(false);
 
@@ -122,8 +146,11 @@ namespace EnvironmentDashboard.Api.Services {
         }
     
         public async Task WriteLatestImageToStream(Camera camera, Stream stream, Int32? maxWidth) {
-            var objects = GetTodaysImages(camera);
+            var objects = GetLatestImages(camera);
             var obj = objects.OrderByDescending(o => o.LastModified).FirstOrDefault();
+
+            if(obj == null)
+                return;
 
             var encoding = new UTF8Encoding(false);
 
@@ -145,7 +172,7 @@ namespace EnvironmentDashboard.Api.Services {
         }
 
         public async Task SaveImageStream(Camera camera, Stream stream, string extension) {
-            var fileName = BucketPrefix + "/" + camera.Id + "/" + _systemClock.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss") + extension;
+            var fileName = GetBucketPrefix(_systemClock.UtcNow, camera) + "/" + _systemClock.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss") + extension;
 
             using(var ms = new MemoryStream()) {
                 await stream.CopyToAsync(ms);
