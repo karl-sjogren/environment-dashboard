@@ -7,7 +7,9 @@
     {{#link-to 'index'}}
       <img src="/assets/images/logo.png"/>
     {{/link-to}}
-    <h1 class="sr-only">Environment dashboard</h1>
+    <h1 class="sr-only">
+      {{#link-to 'index'}}Environment dashboard{{/link-to}}
+    </h1>
   </header>
   <aside>
     <nav {{action 'toggleMenu'}} class={{if menuOpen 'open'}}>

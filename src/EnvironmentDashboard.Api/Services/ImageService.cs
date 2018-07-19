@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -115,11 +116,17 @@ namespace EnvironmentDashboard.Api.Services {
             var encoding = new UTF8Encoding(false);
 
             foreach(var obj in objects) {
+                _log.LogDebug($"Fetching image with key " + obj.Key);
+
                 var request = new GetObjectRequest();
                 request.BucketName = _options.BucketName;
                 request.Key = obj.Key;
 
+                var sw = Stopwatch.StartNew();
                 var response = await _client.GetObjectAsync(request);
+                sw.Stop();
+
+                _log.LogDebug($"Fetching took " + sw.Elapsed.ToString());
 
                 using(var sr = new StreamWriter(stream, encoding, 4096, true)) {
                     await sr.WriteLineAsync("Content-type: " + mimeType);
@@ -141,7 +148,7 @@ namespace EnvironmentDashboard.Api.Services {
                 }
 
                 await stream.FlushAsync();
-                await Task.Delay(TimeSpan.FromMilliseconds(250));
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
             }
         }
     
