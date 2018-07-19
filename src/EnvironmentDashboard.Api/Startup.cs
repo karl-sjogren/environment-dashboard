@@ -49,6 +49,10 @@ namespace EnvironmentDashboard.Api {
                 options.MongoDbUri = Configuration["MONGODB_URI"];
             });
 
+            services.Configure<YrOptions>(options => {
+                options.Path = Configuration["YR_PATH"];
+            });
+
             services.Configure<SmtpOptions>(options => {
                 options.Host = Configuration["MAILGUN_SMTP_SERVER"] ?? Configuration["SMTP_SERVER"];
                 options.Port = Convert.ToInt32(Configuration["MAILGUN_SMTP_PORT"] ?? Configuration["SMTP_PORT"] ?? "25");

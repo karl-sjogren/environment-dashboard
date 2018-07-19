@@ -1,0 +1,25 @@
+.cameras {
+  .latest-camera-image {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    margin-bottom: 16px;
+    background-image: url('/assets/images/puff-loader.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .column-container {
+    clear: both;
+  }
+}
+
+@media screen and (min-width: 460px) {
+  .cameras {
+    .latest-camera-image {
+      max-width: 250px;
+      min-width: 250px;
+      float: right;
+    }
+  }
+}

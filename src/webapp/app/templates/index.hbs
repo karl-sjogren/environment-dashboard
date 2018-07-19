@@ -1,10 +1,12 @@
 {{scroll-top}}
-<section class="page">
-  <div class="startpage">
+<section class="page dashboard">
+  <div>
     <h1>Welcome {{session.data.authenticated.name}}!</h1>
 
     <p>This page is still a work in progress and will feature some kind of dashboard.</p>
-
-    {{image-stream}}
   </div>
+
+  {{#each cameras.items as |camera|}}
+    {{latest-camera-image cameraId=camera.id}}
+  {{/each}}
 </section>

@@ -17,6 +17,8 @@
         {{#unless camera.deleted}}
           <li>
             <article class="column-container">
+              {{latest-camera-image cameraId=camera.id}}
+
               <div class="column">
                 <div class="camera-name">
                   <h1>{{camera.name}}</h1>

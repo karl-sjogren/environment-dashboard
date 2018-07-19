@@ -110,7 +110,7 @@ namespace EnvironmentDashboard.Api.Controllers {
         }
 
         [Authorize(Policy = "AdminUser")]
-        [HttpGet("{id}/latest")]
+        [HttpGet("{id}/latest-image")]
         public async Task GetLatestImage([FromRoute]string id) {
             var camera = await _cameraStore.GetById(id);
 
