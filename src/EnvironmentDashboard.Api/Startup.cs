@@ -25,9 +25,9 @@ namespace EnvironmentDashboard.Api {
     public class Startup {
         private readonly ILogger _log;
 
-        public Startup(IConfiguration configuration, ILogger<Startup> log) {
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory) {
             Configuration = configuration;
-            _log = log;
+            _log = loggerFactory.CreateLogger<Startup>();
         }
 
         public IConfiguration Configuration { get; }

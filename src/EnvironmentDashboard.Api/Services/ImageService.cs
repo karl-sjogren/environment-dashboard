@@ -37,7 +37,7 @@ namespace EnvironmentDashboard.Api.Services {
         }
 
         private string GetBucketPrefix(DateTimeOffset date, Camera camera) {
-            var prefix = $"{date.ToUniversalTime():yyyy-MM-dd)}/{camera.Id}";
+            var prefix = $"{date.ToUniversalTime():yyyy-MM-dd}/{camera.Id}";
             _log.LogDebug("Calculated prefix: " + prefix);
             return prefix;
         }
