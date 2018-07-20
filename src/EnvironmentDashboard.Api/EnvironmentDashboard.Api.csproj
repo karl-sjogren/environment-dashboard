@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <None Update="Resources\" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

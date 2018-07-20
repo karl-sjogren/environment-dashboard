@@ -60,6 +60,9 @@ licensed under Creative Commons Zero.
 Sample image from https://pixabay.com/sv/giraff-zebra-afrika-safari-djurliv-1082168/,
 licensed under Creative Commons Zero.
 
+Roboto font from https://github.com/google/fonts/tree/master/apache/roboto, licensed
+under the Apache license 2.0.
+
 YR weather symbols from https://github.com/YR/weather-symbols, licensed under MIT license.
 
 Also see [nodes-cripts/packages.json](src/node-scripts/package.json) and

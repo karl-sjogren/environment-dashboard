@@ -29,12 +29,16 @@ namespace EnvironmentDashboard.Api.Services {
         private readonly AmazonWebServicesOptions _options;
         private readonly IAmazonS3 _client;
         private readonly ISystemClock _systemClock;
+        private readonly FontFamily _fontFamily;
 
         public ImageService(IOptions<AmazonWebServicesOptions> optionsAccessor, ISystemClock systemClock, ILogger<ImageService> log) {
             _options = optionsAccessor.Value;
             _client = new AmazonS3Client(_options.AccessKey, _options.SecretKey, _options.Region);
             _systemClock = systemClock;
             _log = log;
+
+            var fonts = new FontCollection();
+            _fontFamily = fonts.Install("./Resources/Roboto-Regular.ttf");
         }
 
         private string GetBucketPrefix(DateTimeOffset date, Camera camera) {
@@ -82,7 +86,8 @@ namespace EnvironmentDashboard.Api.Services {
 
         private void MutateImage(Image<Rgba32> image, Int32? maxWidth, DateTime lastModified) {
             var text = lastModified.ToString("HH:mm");
-            var font = SystemFonts.CreateFont("Arial", 39, FontStyle.Regular);
+
+            var font = new Font(_fontFamily, 39, FontStyle.Regular);
 
             if(maxWidth.HasValue) {
                 var resizeOptions = new ResizeOptions {
