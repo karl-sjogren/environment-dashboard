@@ -7,6 +7,6 @@
   {{yr-forecast forecast=forecast}}
 
   {{#each cameras.items as |camera|}}
-    {{latest-camera-image cameraId=camera.id}}
+    {{latest-camera-image cameraId=camera.id showPlayButton=true}}
   {{/each}}
 </section>

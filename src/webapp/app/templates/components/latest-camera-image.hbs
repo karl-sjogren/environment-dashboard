@@ -1,0 +1,12 @@
+{{#unless imageFailed}}
+  <img src="{{imageSrc}}" />
+  {{#if showPlayButton}}
+    {{#if imageLoaded}}
+      {{#unless playing}}
+        <div class="button-container">
+          <button class="play-button" {{action 'play'}}><span class="chevron right"></span></button>
+        </div>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
+{{/unless}}
