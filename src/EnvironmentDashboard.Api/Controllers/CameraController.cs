@@ -65,7 +65,7 @@ namespace EnvironmentDashboard.Api.Controllers {
 
 
         [Authorize(Policy = "ApiUser")]
-        [HttpPost("{id}/upload-image")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> SaveImageStream([FromRoute]string id) {
             var camera = await _cameraStore.GetById(id);
 

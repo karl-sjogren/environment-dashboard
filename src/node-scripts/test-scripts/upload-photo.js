@@ -1,4 +1,3 @@
-const argv = require('yargs').argv;
 const EnvironmentClient = require('../src/env-client');
 
 const client = new EnvironmentClient(process.env.ED_API_URL, process.env.ED_API_KEY);

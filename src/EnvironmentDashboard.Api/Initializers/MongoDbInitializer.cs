@@ -23,7 +23,12 @@ namespace EnvironmentDashboard.Api.Stores {
 
             BsonClassMap.RegisterClassMap<SensorValue>(cm => {
                 cm.AutoMap();
+                cm.SetIsRootClass(true);
                 cm.MapIdMember(c => c.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
+
+            BsonClassMap.RegisterClassMap<SensorTemperatureValue>(cm => {
+                cm.AutoMap();
             });
 
             BsonClassMap.RegisterClassMap<Camera>(cm => {
