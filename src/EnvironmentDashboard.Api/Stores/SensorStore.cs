@@ -62,22 +62,35 @@ namespace EnvironmentDashboard.Api.Stores {
             }
         }
 
+        public async Task Delete(string id) {
+            Logger.LogInformation($"Removing sensor with id {id}.");
+            var collection = Database.GetCollection<Sensor>("sensors");
+            await collection.DeleteOneAsync(new BsonDocument("_id", id));
+        }
+
+        public async Task<PaginatedResult<SensorValue>> GetValues(string id, Int32 pageIndex, Int32 pageSize) {
+            var collection = Database.GetCollection<SensorValue>("sensor-values");
+            
+            var items = await collection.AsQueryable()
+                .Where(s => s.SensorId == id)
+                .OrderByDescending(s => s.Created)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var count = await collection.AsQueryable().CountAsync();
+            return new PaginatedResult<SensorValue>(items, pageIndex, pageSize, count);
+        }
+
         public async Task SaveValue(SensorValue value) {
             var sensor = await GetById(value.SensorId);
             if(sensor == null) {
                 throw new InvalidOperationException("Invalid sensor id specified for value. " + value.SensorId);
             }
 
-            var collection = Database.GetCollection<SensorValue>("sensor-value");
+            var collection = Database.GetCollection<SensorValue>("sensor-values");
             
             value.Created = DateTime.Now;
             await collection.InsertOneAsync(value);
-        }
-
-        public async Task Delete(string id) {
-            Logger.LogInformation($"Removing sensor with id {id}.");
-            var collection = Database.GetCollection<Sensor>("sensors");
-            await collection.DeleteOneAsync(new BsonDocument("_id", id));
         }
 
         public async Task DeleteValues(string sensorId) {

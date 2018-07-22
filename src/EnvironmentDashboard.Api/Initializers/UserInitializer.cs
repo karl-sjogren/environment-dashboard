@@ -22,9 +22,9 @@ namespace EnvironmentDashboard.Api.Stores {
             Console.WriteLine("Creating default user with configured password.");
 
             var user = new User {
-                FirstName = "Anna",
-                LastName = "Andersson",
-                Email = "anna.andersson@openlib.se",
+                FirstName = "Randy",
+                LastName = "Randleman",
+                Email = "randy.randleman@example.com",
                 Created = DateTime.Now,
                 Modified = DateTime.Now
             };
