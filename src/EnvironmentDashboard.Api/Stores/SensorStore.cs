@@ -77,7 +77,7 @@ namespace EnvironmentDashboard.Api.Stores {
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-            var count = await collection.AsQueryable().CountAsync();
+            var count = await collection.AsQueryable().Where(s => s.SensorId == id).CountAsync();
             return new PaginatedResult<SensorValue>(items, pageIndex, pageSize, count);
         }
 

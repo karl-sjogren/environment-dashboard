@@ -22,8 +22,8 @@ namespace EnvironmentDashboard.Api.Controllers {
 
         [Authorize(Policy = "AdminUser")]
         [HttpGet]
-        public async Task<IActionResult> ListCameras() {
-            return Json(await _cameraStore.GetPaged(0, 100));
+        public async Task<IActionResult> ListCameras(Int32 pageIndex = 0, Int32 pageSize = 100) {
+            return Json(await _cameraStore.GetPaged(pageIndex, pageSize));
         }
 
         [Authorize(Policy = "AdminUser")]

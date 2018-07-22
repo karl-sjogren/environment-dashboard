@@ -45,5 +45,8 @@
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
+  },
+  "dependencies": {
+    "chart.js": "^2.7.2"
   }
 }

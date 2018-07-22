@@ -23,8 +23,8 @@ namespace EnvironmentDashboard.Api.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListApiKeys() {
-            return Json(await _apiKeyStore.GetPaged(0, 100));
+        public async Task<IActionResult> ListApiKeys(Int32 pageIndex = 0, Int32 pageSize = 100) {
+            return Json(await _apiKeyStore.GetPaged(pageIndex, pageSize));
         }
 
         [HttpGet("{id}")]

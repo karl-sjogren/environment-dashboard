@@ -26,5 +26,12 @@ module.exports = function(defaults) {
     ]
   });
 
+
+  app.import('node_modules/chart.js/dist/Chart.js', {
+    using: [
+      { transformation: 'amd', as: 'chartjs' }
+    ]
+  });
+
   return app.toTree();
 };

@@ -20,8 +20,8 @@ namespace EnvironmentDashboard.Api.Controllers {
 
         [Authorize(Policy = "AdminUser")]
         [HttpGet]
-        public async Task<IActionResult> ListSensors() {
-            return Json(await _sensorStore.GetPaged(0, 100));
+        public async Task<IActionResult> ListSensors(Int32 pageIndex = 0, Int32 pageSize = 100) {
+            return Json(await _sensorStore.GetPaged(pageIndex, pageSize));
         }
 
         [Authorize(Policy = "AdminUser")]
@@ -60,6 +60,12 @@ namespace EnvironmentDashboard.Api.Controllers {
             await _sensorStore.DeleteValues(id);
             await _sensorStore.Delete(id);
             return NoContent();
+        }
+
+        [Authorize(Policy = "AdminUser")]
+        [HttpGet("{id}/values")]
+        public async Task<IActionResult> ListSensorValues([FromRoute] string id, Int32 pageIndex = 0, Int32 pageSize = 100) {
+            return Json(await _sensorStore.GetValues(id, pageIndex, pageSize));
         }
 
         [Authorize(Policy = "ApiUser")]

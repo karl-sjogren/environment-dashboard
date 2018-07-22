@@ -14,6 +14,11 @@ export default Service.extend({
     return this.ajax.request(url);
   },
 
+  findValues(sensorId, pageIndex, pageSize) {
+    let url = `/admin/api/sensors/${sensorId}/values?pageIndex=${pageIndex}&pageSize=${pageSize}`;
+    return this.ajax.request(url);
+  },
+
   remove(id) {
     let url = `/admin/api/sensors/${id}`;
     return this.ajax.delete(url);

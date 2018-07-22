@@ -30,8 +30,8 @@ namespace EnvironmentDashboard.Api.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListUsers() {
-            return Json(await _userStore.GetPaged(0, 100));
+        public async Task<IActionResult> ListUsers(Int32 pageIndex = 0, Int32 pageSize = 100) {
+            return Json(await _userStore.GetPaged(pageIndex, pageSize));
         }
 
         [HttpGet("{id}")]
