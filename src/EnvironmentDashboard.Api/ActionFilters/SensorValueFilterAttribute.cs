@@ -21,9 +21,10 @@ namespace EnvironmentDashboard.Api.ActionFilters {
             var sensorStore = (ISensorStore)context.HttpContext.RequestServices.GetService(typeof(ISensorStore));
             var sensor = await sensorStore.GetById(sensorId);
 
+            Type parameterType;
             switch(sensor.Type) {
                 case "temperature":
-                    sensorValueParam.ParameterType = typeof(SensorTemperatureValue);
+                    parameterType = typeof(SensorTemperatureValue);
                     break;
                 default:
                     context.Result = new BadRequestObjectResult("Unknown sensor type: " + sensor.Type);
@@ -37,7 +38,7 @@ namespace EnvironmentDashboard.Api.ActionFilters {
             using(var sr = new StreamReader(context.HttpContext.Request.Body))
                 json = await sr.ReadToEndAsync();
 
-            var model = JsonConvert.DeserializeObject(json, sensorValueParam.ParameterType);
+            var model = JsonConvert.DeserializeObject(json, parameterType);
             context.ActionArguments[sensorValueParam.Name] = model;
 
             await next();

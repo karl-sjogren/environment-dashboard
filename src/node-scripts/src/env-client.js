@@ -45,11 +45,11 @@ module.exports = class EnvironmentClient {
       })
     })
     .then(result => {
-      console.info('Successfully uploaded binary to dashboard.');
+      console.info('Successfully uploaded temperature reading to dashboard.');
       return result;
     })
     .catch(error => {
-      console.error('An error occured while uploading a binary file.', error);
+      console.error('An error occured while uploading a temperature reading.', error);
     });
   }
 }
