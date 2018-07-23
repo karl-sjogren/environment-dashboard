@@ -6,14 +6,13 @@
 
   {{yr-forecast forecast=forecast}}
 
-
-  {{#each cameras.items as |camera|}}
-    {{latest-camera-image cameraId=camera.id showPlayButton=true}}
-  {{/each}}
-
   {{#each sensors.items as |sensor|}}
     {{#if (eq sensor.type 'temperature')}} 
       {{temperature-graph sensorId=sensor.id}}
     {{/if}}
+  {{/each}}
+
+  {{#each cameras.items as |camera|}}
+    {{latest-camera-image cameraId=camera.id showPlayButton=true}}
   {{/each}}
 </section>
