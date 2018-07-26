@@ -31,7 +31,7 @@ module.exports = class EnvironmentClient {
 
   uploadTemperatureReading(sensorId, temperature, humidity) {
     let uploadUrl = url.resolve(this.baseUrl, `/admin/api/sensors/${sensorId}`);
-    console.info(`Uploading temperature reading to ${uploadUrl}.`);
+    console.info(`Uploading temperature reading to ${uploadUrl}. Temperature: ${temperature} C, Humidity: ${humidity}%`);
     return fetch(uploadUrl, {
       method: 'POST',
       headers: {
