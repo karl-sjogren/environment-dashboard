@@ -1,0 +1,8 @@
+<tr>
+  <th>Sensor</th>
+  <th title="Temperature">Temp.</th>
+  <th title="Humidity">Hum.</th>
+</tr>
+{{#each sensors as |sensor|}}
+  {{temperature-table-row sensor=sensor}}
+{{/each}}

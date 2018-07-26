@@ -6,9 +6,11 @@
 
   {{yr-forecast forecast=forecast}}
 
+  {{temperature-table sensors=sensors.items}}
+
   {{#each sensors.items as |sensor|}}
     {{#if (eq sensor.type 'temperature')}} 
-      {{temperature-graph sensorId=sensor.id}}
+      {{!temperature-graph sensorId=sensor.id}}
     {{/if}}
   {{/each}}
 

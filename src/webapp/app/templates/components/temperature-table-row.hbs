@@ -1,0 +1,8 @@
+<td>{{sensor.name}}</td>
+{{#unless empty}}
+  <td>{{format-number model.temperature decimals=1}}&deg; C</td>
+  <td>{{format-number model.humidity}}%</td>
+{{else}}
+  <td>-</td>
+  <td>-</td>
+{{/unless}}
