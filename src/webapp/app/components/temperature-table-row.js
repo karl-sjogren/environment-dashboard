@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { later } from '@ember/runloop';
 import { inject } from '@ember/service';
 
 export default Component.extend({

@@ -85,7 +85,7 @@ namespace EnvironmentDashboard.Api.Services {
         }
 
         private void MutateImage(Image<Rgba32> image, Int32? maxWidth, DateTime lastModified) {
-            var text = lastModified.ToString("HH:mm");
+            var text = lastModified.ToString("yy-MM-dd HH:mm");
 
             var font = new Font(_fontFamily, 39, FontStyle.Regular);
 
@@ -113,8 +113,11 @@ namespace EnvironmentDashboard.Api.Services {
         }
 
         public async Task WriteReplacingHttpStream(Camera camera, Stream stream, string boundary, Int32? maxWidth) {
+            if(!maxWidth.HasValue)
+                maxWidth = 600;
+
             var mimeType = "image/jpeg";
-        
+
             var objects = GetLatestImages(camera);
             objects = objects.OrderBy(o => o.LastModified).ToList();
 
@@ -158,6 +161,9 @@ namespace EnvironmentDashboard.Api.Services {
         }
     
         public async Task WriteLatestImageToStream(Camera camera, Stream stream, Int32? maxWidth) {
+            if(!maxWidth.HasValue)
+                maxWidth = 600;
+
             var objects = GetLatestImages(camera);
             var obj = objects.OrderByDescending(o => o.LastModified).FirstOrDefault();
 

@@ -1,8 +1,10 @@
 <td>{{sensor.name}}</td>
 {{#unless empty}}
-  <td>{{format-number model.temperature decimals=1}}&deg; C</td>
-  <td>{{format-number model.humidity}}%</td>
+  <td class="temperature">{{format-number model.temperature decimals=1}}&deg; C</td>
+  <td class="humidity">{{format-number model.humidity}}%</td>
+  <td class="last-update">{{format-date model.created format='YYYY-MM-DD'}}</td>
 {{else}}
-  <td>-</td>
-  <td>-</td>
+  <td class="temperature">-</td>
+  <td class="humidity">-</td>
+  <td class="last-update">-</td>
 {{/unless}}
