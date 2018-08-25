@@ -47,5 +47,12 @@ module.exports = function(environment) {
     // here you can enable a production-specific feature
   }
 
+  ENV['ember-simple-auth'] = {
+    baseURL: '',
+    authenticationRoute: 'login',
+    routeAfterAuthentication: 'index',
+    routeIfAlreadyAuthenticated: 'index',
+  };
+
   return ENV;
 };

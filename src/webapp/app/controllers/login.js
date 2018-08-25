@@ -11,9 +11,13 @@ export default Controller.extend({
     login() {
       this.set('error', false);
       let { username, password } = this.getProperties('username', 'password');
-      this.get('session').authenticate('authenticator:custom', username, password).catch(() => {
-        this.set('error', true);
-      });
+      this.get('session').authenticate('authenticator:custom', username, password)
+        .then(() => {
+          this.transitionToRoute('index');
+        })
+        .catch(() => {
+          this.set('error', true);
+        });
     }
   }
 });
