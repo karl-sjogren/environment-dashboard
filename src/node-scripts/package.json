@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "bluebird": "^3.5.1",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.7",
     "pi-camera": "karl-sjogren/pi-camera",
     "rpi-gpio": "^1.0.0",
     "yargs": "^12.0.1"
